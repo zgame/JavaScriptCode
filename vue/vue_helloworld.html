@@ -9,9 +9,15 @@
 <body>
 
 <div id="app">
-    {{ message }}
+    <!-- 字符串反转 -->
+    <p>{{ message.split('').reverse().join('') }}</p>
+        <input v-model="message">
 </div>
+
+
 <!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+
+
 <script>
     new Vue({
         el:'#app',
