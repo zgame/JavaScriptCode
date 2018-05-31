@@ -27,3 +27,5 @@ vue/.idea/workspace.xml
 .idea/vcs.xml
 *.xml
 .idea/vcs.xml
+SailsAdmin/node_modules/
+ServerExpress/node_modules/
