@@ -30,7 +30,7 @@ export default {
   methods: {
     get () {
       // let url = 'http://127.0.0.1:8000/zsw?user=' + this.message + '&id=' + this.idx
-      let url = 'http://127.0.0.1:3000/echo'
+      let url = 'http://127.0.0.1:3000/zsw'
 
       this.$axios.get(url, {
         params: {
@@ -39,10 +39,8 @@ export default {
         }
       }).then((response) => {
         console.log(response)
-        console.log('response:' + response.data)
+        // console.log('response:' + response.data)
         this.resz = response.data
-
-        console.log('ddddddddddddddddddd')
       })
         .catch(function (error) {
           console.log(error)
