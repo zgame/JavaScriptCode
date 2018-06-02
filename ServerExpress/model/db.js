@@ -28,7 +28,7 @@ db.connection = function () {
         host: 'localhost',
         user: 'zsw1',
         password: 'zsw123',
-        database: 'zsw_db',
+        database: 'by_statis_db',
         port: 3306
     });
     //数据库连接
