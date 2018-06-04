@@ -9,6 +9,8 @@ function response_json (success,data, message) {
     str_json["data"] = data;
     str_json["message"] = message;
 
+    let json1 = JSON.stringify(str_json, null, 4);     //使用四个空格缩进
+    console.debug("str_json-----------"+json1);
     return str_json;
 }
 

@@ -10,11 +10,11 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            {{$t('navbar.dashboard')}}
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">LogOut</span>
+          <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

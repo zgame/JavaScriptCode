@@ -12,14 +12,13 @@ export function login(username, password) {
   })
 }
 
-export function getInfo(token, username) {
+export function getInfo(token) {
   console.debug('api getInfo')
   return request({
     url: '/user/info',
     method: 'get',
     params: {
-      token,
-      username
+      token
     }
   })
 }

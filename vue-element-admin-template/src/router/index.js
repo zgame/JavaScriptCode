@@ -23,7 +23,9 @@ import Layout from '../views/layout/Layout'
 **/
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
+  // { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
+  { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
 
   {
     path: '/',
@@ -42,7 +44,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    meta: { title: '表格', icon: 'example' },
     children: [
       {
         path: 'table',
@@ -57,34 +59,7 @@ export const constantRouterMap = [
         meta: { title: 'Tree', icon: 'tree' }
       }
     ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/form1',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 export default new Router({
@@ -92,4 +67,52 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+export const asyncRouterMap = [
+  {
+    path: '/form',
+    component: Layout,
+    meta: { title: '表单', icon: 'form', roles: ['admin'] },
+    children: [
+      // {
+      //   path: 'index',
+      //   name: 'Form',
+      //   component: () => import('@/views/form/index'),
+      //   meta: { title: '表单', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/form/index'),
+        meta: { title: '表单', icon: 'form' }
+        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/article',
+    component: Layout,
+    meta: { title: '文章列表', icon: 'table', roles: ['admin', 'view'] },
+    children: [
+      // {
+      //   path: 'index',
+      //   name: 'article',
+      //   component: () => import('@/views/table/complexTable'),
+      //   meta: { title: '文章列表', icon: 'table' }
+      //   // meta: { title: '文章列表', icon: 'table', roles: ['admin', 'View'] }
+      // },
+      {
+        path: 'index',
+        name: 'article',
+        component: () => import('@/views/table/complexTable'),
+        meta: { title: '文章列表', icon: 'table' }
+        // meta: { title: '文章列表', icon: 'table', roles: ['admin', 'View'] }
+      }
+
+    ]
+  },
+
+  { path: '*', redirect: '/404', hidden: true }
+]
 

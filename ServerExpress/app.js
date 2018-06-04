@@ -10,7 +10,7 @@ let logger = require('morgan');
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let zswRouter = require('./routes/zsw');
-let echoRouter = require('./routes/echo');
+let tableRouter = require('./routes/table');
 
 let app = express();
 
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/zsw', zswRouter);
-app.use('/echo', echoRouter);
+app.use('/table', tableRouter);
 
 
 //----------------------------------------------------------------------------------------
