@@ -4,6 +4,7 @@
     <div class="dashboard-text">您的权限:
       <span v-for='role in roles' :key='role'>【  {{ role }} 】</span>
     </div>
+    <component :is="currentRole"></component>
   </div>
 </template>
 

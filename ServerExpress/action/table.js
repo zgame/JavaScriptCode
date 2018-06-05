@@ -1,5 +1,6 @@
 let db = require('../model/db');
 let res_json = require('./utils/response_json');
+let deepClone = require('./utils/deepClone');
 let table = {};
 
 table.list = function(req, res, next) {
@@ -13,8 +14,17 @@ table.list = function(req, res, next) {
     item1['author'] = 'fff';
     item1['display_time'] = '2008-08-07 08:01:02';
     item1['pageviews'] = 123;
-    arrary.push(item1);
-    arrary.push(item1);
+
+    let item2 = deepClone(item1);
+    item2['title'] = 'item2';
+    item2['pageviews'] = 22;
+    let item3 = deepClone(item2);
+    item3['title'] = 'item3';
+    item3['pageviews'] = 232;
+    item3['status'] = '55';
+
+    arrary.push(item2);
+    arrary.push(item3);
 
     item1['author'] = "zsw";
     arrary.push(item1);
@@ -38,8 +48,15 @@ table.list_article = function(req, res, next) {
     item1['status'] = 'published';
     item1['author'] = 'fff';
 
-    arrary.push(item1);
-    arrary.push(item1);
+    let item2 = deepClone(item1);
+    item2['title'] = 'item2';
+    item2['type'] = 'CN';
+    let item3 = deepClone(item1);
+    item3['title'] = 'item3';
+    item3['type'] = 'EU';
+
+    arrary.push(item2);
+    arrary.push(item3);
     arrary.push(item1);
     data["items"] = arrary;
 

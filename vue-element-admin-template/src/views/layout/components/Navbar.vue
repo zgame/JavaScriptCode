@@ -13,6 +13,11 @@
             {{$t('navbar.dashboard')}}
           </el-dropdown-item>
         </router-link>
+        <router-link class="inlineBlock" to="/editor/index">
+          <el-dropdown-item>
+            {{$t('route.pagePermission')}}
+          </el-dropdown-item>
+        </router-link>
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
         </el-dropdown-item>

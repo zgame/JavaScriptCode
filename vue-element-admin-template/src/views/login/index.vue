@@ -1,7 +1,10 @@
 <template>
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">vue-element-admin</h3>
+      <h3 class="title">BY 统计后台</h3>
+      <div class="tips">
+      <p style="margin-right:20px;">技术支持：Zhu Shiwei</p>
+      </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
@@ -21,10 +24,10 @@
           Sign in
         </el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: zsw</span>
-        <span> password: zsw123</span>
-      </div>
+      <!--<div class="tips">-->
+        <!--<span style="margin-right:20px;">username: zsw</span>-->
+        <!--<span> password: zsw123</span>-->
+      <!--</div>-->
     </el-form>
   </div>
 </template>
@@ -145,6 +148,7 @@ $light_gray:#eee;
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
+    text-align: right;
     span {
       &:first-of-type {
         margin-right: 16px;

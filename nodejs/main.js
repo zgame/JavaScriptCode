@@ -1,3 +1,5 @@
+let currentTime = require('./currentTime');
+
 function abc() {
     console.debug("test");
     let out = 'outzzzzz';
@@ -25,6 +27,13 @@ function abc() {
     a[6]();
     a[100]();
 
+    // let d1 = new Date();
+    // d1.format("yyyy-MM-dd hh:mm:ss");
+    // console.info("dddddd");
+    console.info("",currentTime());
+
 }
+
+
 
 abc();

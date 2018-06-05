@@ -1,6 +1,7 @@
 let db = require('../model/db');
 let res_json = require('./utils/response_json');
 let tokens = require('./utils/token');
+let currentTime = require('./utils/currentTime');
 let user = {};
 
 //-------------------------用户登录----------------------------
@@ -18,6 +19,7 @@ let user = {};
     connection.query(sql,function (err, result) {
         if (err) {
             console.log('[SELECT  ERROR] - ', err.message);
+            res.send(res_json(false,"","数据库连接不上，请检查数据库是否开启！"));
             return;
         }
         // let str_json = JSON.stringify(result, null, 4);
@@ -30,6 +32,16 @@ let user = {};
                 success = true;
                 message = "登录成功!";
                 data["token"] = tokens.createToken(user_name, 3600*24*10)
+
+                // 更新一下登录的时间
+                let connection = db.connection();
+                let login_time = currentTime();
+                let sql = "update user set login_time = '"+ login_time +"' where name = '" + user_name + "'";
+                connection.query(sql,function (err, result) {
+                    if (err) {
+                        console.log('[更新登录时间  ERROR] - ', err.message);
+                    }
+                });
             }else{
                 message = "密码错误!";
             }
@@ -57,6 +69,7 @@ user.info =  function(req, res, next) {
         connection.query(sql,function (err, result) {
             if (err) {
                 console.log('[SELECT  ERROR] - ', err.message);
+                res.send(res_json(false,"","数据库错误！"));
                 return;
             }
             // console.debug("result[0][\"is_admin\"]",result[0]["is_admin"]);
@@ -79,8 +92,6 @@ user.info =  function(req, res, next) {
         str_json["message"] = "用户token验证错误";
         res.send(str_json);
     }
-
-
 };
 
 //-------------------------用户登出----------------------------
@@ -88,5 +99,7 @@ user.logout =  function(req, res, next) {
     //{"code":20000,"data":"success"}
     res.send(res_json(true,"success","用户登出"));
 };
+
+
 
 module.exports = user;
