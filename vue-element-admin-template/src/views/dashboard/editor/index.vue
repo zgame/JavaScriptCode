@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
+    <!--**************************顶部信息*******************************-->
     <div class=" clearfix">
       <pan-thumb style="float: left" :image="avatar"> {{ $t('permission.roles')}}:
         <span class="pan-info-roles" :key='item' v-for="item in roles">{{item}}</span>
@@ -11,55 +12,37 @@
       </div>
     </div>
     <el-row :gutter="20">
-
+        <!--**************************表格*******************************-->
       <el-col :span="18">
         <div class="grid-content bg-purple"></div>
         <div class="app-container">
-          <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
-            <el-table-column align="center" label='ID' width="50">
-              <template slot-scope="scope">
-                {{scope.row.id}}
-              </template>
+          <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row  default-sort = "{prop: 'name', order: 'descending'}">
+            <el-table-column align="center" label='ID' width="50" sortable prop="id">
+              <template slot-scope="scope"> {{scope.row.id}}</template>
             </el-table-column>
-            <el-table-column label="Name" width="100" align="center">
-              <template slot-scope="scope">
-                {{scope.row.name}}
-              </template>
+            <el-table-column label="Name" width="100" align="center" sortable prop="name">
+              <template slot-scope="scope"> {{scope.row.name}}</template>
             </el-table-column>
-            <el-table-column label="Pwd" width="100" align="center">
-              <template slot-scope="scope">
-                <span>{{scope.row.pwd}}</span>
-              </template>
+            <el-table-column label="Pwd" width="100" align="center" >
+              <template slot-scope="scope"><span>{{scope.row.pwd}}</span></template>
             </el-table-column>
-            <el-table-column label="Login" width="200" align="center">
+            <el-table-column label="Login" width="200" align="center" sortable prop="login_time">
               <template slot-scope="scope">
                 <i class="el-icon-time"></i>
-                <!--<span>{{scope.row.login_time}}</span>-->
                 <span>{{scope.row.login_time }}</span>
               </template>
             </el-table-column>
-            <el-table-column class-name="status-col" label="admin" width="100" align="center">
-              <template slot-scope="scope">
-                {{scope.row.is_admin}}
-              </template>
+            <el-table-column  label="admin" width="100" align="center" sortable prop="is_admin">
+              <template slot-scope="scope"> {{scope.row.is_admin}}</template>
             </el-table-column>
-            <el-table-column align="center" prop="created_at" label="dashboard" width="100">
-              <template slot-scope="scope">
-
-                {{scope.row.is_dashboard}}
-              </template>
+            <el-table-column align="center" label="dashboard" width="100" sortable prop="is_dashboard">
+              <template slot-scope="scope"> {{scope.row.is_dashboard}}</template>
             </el-table-column>
-            <el-table-column align="center" prop="created_at" label="statis" width="100">
-              <template slot-scope="scope">
-
-                {{scope.row.is_statis}}
-              </template>
+            <el-table-column align="center" label="statis" width="100" sortable prop="is_statis">
+              <template slot-scope="scope"> {{scope.row.is_statis}}</template>
             </el-table-column>
-            <el-table-column align="center" prop="created_at" label="edit" width="100">
-              <template slot-scope="scope">
-
-                {{scope.row.is_edit}}
-              </template>
+            <el-table-column align="center" label="edit" width="100" sortable prop="is_edit">
+              <template slot-scope="scope"> {{scope.row.is_edit}}</template>
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
@@ -69,10 +52,16 @@
               </template>
             </el-table-column>
           </el-table>
+          <!--**************************分页*******************************-->
+          <div class="pagination-container">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
+                           :page-sizes="[5,10,20,50,100,200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </div>
         </div>
       </el-col>
 
-
+      <!--**************************动画*******************************-->
       <el-col :span="6">
         <div class="grid-content bg-purple-light"></div>
         <div>
@@ -82,9 +71,9 @@
     </el-row>
 
 
+    <!--**************************弹窗*******************************-->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dlgData" :model="dlgData" label-position="left" label-width="90px" style='width: 300px; margin-left:50px;'>
-
 
         <el-form-item label="账号" prop="username">
           <el-input v-model="dlgData.username"></el-input>
@@ -104,9 +93,6 @@
           <el-switch v-model="dlgData.edit" active-color="#13ce66" inactive-color="#ff4949" active-value=1 inactive-value=0></el-switch>
         </el-form-item>
 
-
-
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
@@ -114,6 +100,7 @@
         <el-button v-else type="primary" @click="EditUserAction">{{$t('table.confirm')}}</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -121,7 +108,6 @@
   import { mapGetters } from 'vuex'
   import PanThumb from '@/components/PanThumb'
   import { actionGetUserList, actionAddUser, actionEditUser, actionDelUser } from '@/api/admin'
-  // import { actionGetUserList, actionAddUser, actionEditUser, actionDelUser } from '@/api/admin'
   // import GithubCorner from '@/components/GithubCorner'
 
   export default {
@@ -149,9 +135,13 @@
         },
         rules: {
           username: [{ required: true, message: '必须有名字', trigger: 'change' }, { min: 5, max: 9, message: '长度在 5 到 9 个字符', trigger: 'blur' }],
-          // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
           pwd: [{ required: true, message: '必须有密码', trigger: 'blur' }, { min: 5, max: 9, message: '长度在 5 到 9 个字符', trigger: 'blur' }]
-        }
+        },
+        listQuery: {
+          page: 1,
+          limit: 10
+        },
+        total: 0
       }
     },
     computed: {
@@ -174,6 +164,7 @@
         actionGetUserList(this.listQuery).then(response => {
           this.list = response.data.items
           this.listLoading = false
+          this.total = response.data.total
         })
       },
       // --------------------------------删除用户--------------------------------
@@ -250,7 +241,17 @@
             })
           }
         })
+      },
+      // --------------------------------分页--------------------------------
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getUserList()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getUserList()
       }
+
     }
 
   }

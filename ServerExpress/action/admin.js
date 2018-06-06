@@ -5,6 +5,8 @@ let admin = {};
 
 //-------------------------获取用户信息----------------------------
 admin.getList = function (req, res, next) {
+    let limit = req.query.limit;
+    let page = req.query.page;
     let data = {};
     let connection = db.connection();
     let sql = "SELECT * FROM user ";
@@ -14,7 +16,8 @@ admin.getList = function (req, res, next) {
             res.send(res_json(false, "", "数据库错误！"));
             return;
         }
-        data["items"] = result;
+        data["items"] = result.slice(limit*(page-1),limit*page) ;
+        data['total'] = result.length;
         res.send(res_json(true, data, "获取所有用户信息"));
     });
 };
