@@ -63,17 +63,9 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="primary"
-                  @click="addUser(scope.$index, scope.row)">新增</el-button>
-                <el-button
-                  size="mini"
-                  @click="editUser(scope.$index, scope.row)">编辑</el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="deleteUser(scope.$index, scope.row)">删除</el-button>
+                <el-button size="mini" type="primary" @click="addUser(scope.$index, scope.row)">新增</el-button>
+                <el-button size="mini" @click="editUser(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -91,25 +83,25 @@
 
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dlgData" label-position="left" label-width="90px" style='width: 300px; margin-left:50px;'>
+      <el-form :rules="rules" ref="dlgData" :model="dlgData" label-position="left" label-width="90px" style='width: 300px; margin-left:50px;'>
 
 
-        <el-form-item label="账号" >
+        <el-form-item label="账号" prop="username">
           <el-input v-model="dlgData.username"></el-input>
         </el-form-item>
 
-        <el-form-item label="密码" >
+        <el-form-item label="密码" prop="pwd">
           <el-input v-model="dlgData.pwd"></el-input>
         </el-form-item>
 
-        <el-form-item label="面板可见">
-          <el-switch v-model="dlgData.dashboard"></el-switch>
+        <el-form-item label="面板可见" >
+          <el-switch v-model="dlgData.dashboard" active-color="#13ce66" inactive-color="#ff4949" active-value=1 inactive-value=0></el-switch>
         </el-form-item>
-        <el-form-item label="统计可见">
-          <el-switch v-model="dlgData.statis"></el-switch>
+        <el-form-item label="统计可见" >
+          <el-switch v-model="dlgData.statis" active-color="#13ce66" inactive-color="#ff4949" active-value=1 inactive-value=0></el-switch>
         </el-form-item>
         <el-form-item label="编辑可见">
-          <el-switch v-model="dlgData.edit"></el-switch>
+          <el-switch v-model="dlgData.edit" active-color="#13ce66" inactive-color="#ff4949" active-value=1 inactive-value=0></el-switch>
         </el-form-item>
 
 
@@ -118,7 +110,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="AddUserAction">{{$t('table.confirm')}}</el-button>
+        <el-button v-if="dialogStatus==='create'" type="primary" @click="AddUserAction">{{$t('table.confirm')}}</el-button>
         <el-button v-else type="primary" @click="EditUserAction">{{$t('table.confirm')}}</el-button>
       </div>
     </el-dialog>
@@ -143,6 +135,7 @@
         listLoading: true,
         dialogFormVisible: false,
         dlgData: {
+          id: 0,
           username: '',
           pwd: '',
           dashboard: 0,
@@ -155,9 +148,9 @@
           create: 'Create'
         },
         rules: {
-          username: [{ required: true, message: '必须有名字', trigger: 'change' }],
+          username: [{ required: true, message: '必须有名字', trigger: 'change' }, { min: 5, max: 9, message: '长度在 5 到 9 个字符', trigger: 'blur' }],
           // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-          pwd: [{ required: true, message: '必须有密码', trigger: 'blur' }]
+          pwd: [{ required: true, message: '必须有密码', trigger: 'blur' }, { min: 5, max: 9, message: '长度在 5 到 9 个字符', trigger: 'blur' }]
         }
       }
     },
@@ -175,26 +168,36 @@
       }
     },
     methods: {
-      getUserList() { // 获取用户列表
+      // --------------------------------获取用户列表--------------------------------
+      getUserList() {
         this.listLoading = true
         actionGetUserList(this.listQuery).then(response => {
           this.list = response.data.items
           this.listLoading = false
         })
       },
+      // --------------------------------删除用户--------------------------------
       deleteUser(index, row) {
         // actionDelUser()
         // const index = this.list.indexOf(row)
-        return new Promise((resolve, reject) => {
-          actionDelUser(row.id).then(response => {
-            this.$notify({ title: '成功', message: '删除成功', type: 'success', duration: 2000 })
-            this.getUserList()
-            resolve()
-          }).catch(error => {
-            reject(error)
+        this.$confirm('要删除该用户么?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
+          return new Promise((resolve, reject) => {
+            actionDelUser(row.id).then(response => {
+              this.$notify({ title: '成功', message: '删除成功', type: 'success', duration: 2000 })
+              this.getUserList()
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
           })
         })
       },
+      // --------------------------------添加用户--------------------------------
       addUser(index, row) {
         this.dialogFormVisible = true
         this.dialogStatus = 'create'
@@ -205,36 +208,47 @@
         this.dlgData.edit = 0
       },
       AddUserAction(index, row) {
-        return new Promise((resolve, reject) => {
-          actionAddUser(this.dlgData.username, this.dlgData.pwd, this.dlgData.dashboard, this.dlgData.statis, this.dlgData.edit).then(response => {
-            this.$notify({ title: '成功', message: '增加成功', type: 'success', duration: 2000 })
-            this.getUserList()
-            this.dialogFormVisible = false
-            resolve()
-          }).catch(error => {
-            reject(error)
-          })
+        this.$refs.dlgData.validate((valid) => {
+          if (valid) {
+            return new Promise((resolve, reject) => {
+              actionAddUser(this.dlgData.username, this.dlgData.pwd, this.dlgData.dashboard, this.dlgData.statis, this.dlgData.edit).then(response => {
+                this.$notify({ title: '成功', message: '增加成功', type: 'success', duration: 2000 })
+                this.getUserList()
+                this.dialogFormVisible = false
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
+          }
         })
       },
-      editUser(index, row) {
+      // --------------------------------修改用户--------------------------------
+      editUser: function(index, row) {
         this.dialogFormVisible = true
         this.dialogStatus = 'update'
+
+        this.dlgData.id = row.id
         this.dlgData.username = row.name
         this.dlgData.pwd = row.pwd
-        this.dlgData.dashboard = row.dashboard
-        this.dlgData.statis = row.statis
-        this.dlgData.edit = row.edit
+        this.dlgData.dashboard = '' + row.is_dashboard
+        this.dlgData.statis = '' + row.is_statis
+        this.dlgData.edit = '' + row.is_edit
       },
       EditUserAction(index, row) {
-        return new Promise((resolve, reject) => {
-          actionEditUser(this.dlgData.id, this.dlgData.name, this.dlgData.pwd, this.dlgData.dashboard, this.dlgData.statis, this.dlgData.edit).then(response => {
-            this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
-            this.getUserList()
-            this.dialogFormVisible = false
-            resolve()
-          }).catch(error => {
-            reject(error)
-          })
+        this.$refs['dlgData'].validate((valid) => {
+          if (valid) {
+            return new Promise((resolve, reject) => {
+              actionEditUser(this.dlgData.id, this.dlgData.username, this.dlgData.pwd, this.dlgData.dashboard, this.dlgData.statis, this.dlgData.edit).then(response => {
+                this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
+                this.getUserList()
+                this.dialogFormVisible = false
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            })
+          }
         })
       }
     }

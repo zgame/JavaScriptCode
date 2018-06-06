@@ -175,7 +175,7 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
-      dlgData: {
+      temp: {
         id: undefined,
         importance: 1,
         remark: '',
@@ -266,10 +266,10 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.dlgData.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.dlgData.author = 'vue-element-admin'
-          createArticle(this.dlgData).then(() => {
-            this.list.unshift(this.dlgData)
+          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          this.temp.author = 'vue-element-admin'
+          createArticle(this.temp).then(() => {
+            this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -283,7 +283,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.dlgData.timestamp = new Date(this.dlgData.timestamp)
+      this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -293,13 +293,13 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.dlgData)
+          const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateArticle(tempData).then(() => {
             for (const v of this.list) {
-              if (v.id === this.dlgData.id) {
+              if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.dlgData)
+                this.list.splice(index, 1, this.temp)
                 break
               }
             }

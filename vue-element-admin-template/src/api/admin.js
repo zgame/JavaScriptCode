@@ -12,7 +12,6 @@ export function actionAddUser(username, pwd, dashboard, statis, edit) {
   return request({
     url: '/admin/add',
     method: 'get',
-    // params: { form }
     params: { username, pwd, dashboard, statis, edit }
   })
 }

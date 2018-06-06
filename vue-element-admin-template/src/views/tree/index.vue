@@ -85,31 +85,31 @@
     </div>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form :rules="rules" ref="dataForm" :model="dialogData" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('table.type')" prop="type">
-          <el-select class="filter-item" v-model="temp.type" placeholder="Please select">
+          <el-select class="filter-item" v-model="dialogData.type" placeholder="Please select">
             <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date">
+          <el-date-picker v-model="dialogData.timestamp" type="datetime" placeholder="Please pick a date">
           </el-date-picker>
         </el-form-item>
         <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title"></el-input>
+          <el-input v-model="dialogData.title"></el-input>
         </el-form-item>
         <el-form-item :label="$t('table.status')">
-          <el-select class="filter-item" v-model="temp.status" placeholder="Please select">
+          <el-select class="filter-item" v-model="dialogData.status" placeholder="Please select">
             <el-option v-for="item in  statusOptions" :key="item" :label="item" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.importance')">
-          <el-rate style="margin-top:8px;" v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max='3'></el-rate>
+          <el-rate style="margin-top:8px;" v-model="dialogData.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max='3'></el-rate>
         </el-form-item>
         <el-form-item :label="$t('table.remark')">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="Please input" v-model="temp.remark">
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="Please input" v-model="dialogData.remark">
           </el-input>
         </el-form-item>
       </el-form>
@@ -175,7 +175,7 @@
         sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
         statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
-        dlgData: {
+        dialogData: {
           id: undefined,
           importance: 1,
           remark: '',
@@ -245,7 +245,7 @@
         row.status = status
       },
       resetTemp() {
-        this.temp = {
+        this.dialogData = {
           id: undefined,
           importance: 1,
           remark: '',
@@ -266,10 +266,10 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.dlgData.id = parseInt(Math.random() * 100) + 1024 // mock a id
-            this.dlgData.author = 'vue-element-admin'
-            createArticle(this.dlgData).then(() => {
-              this.list.unshift(this.dlgData)
+            this.dialogData.id = parseInt(Math.random() * 100) + 1024 // mock a id
+            this.dialogData.author = 'vue-element-admin'
+            createArticle(this.dialogData).then(() => {
+              this.list.unshift(this.dialogData)
               this.dialogFormVisible = false
               this.$notify({
                 title: '成功',
@@ -282,8 +282,8 @@
         })
       },
       handleUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
-        this.dlgData.timestamp = new Date(this.dlgData.timestamp)
+        this.dialogData = Object.assign({}, row) // copy obj
+        this.dialogData.timestamp = new Date(this.dialogData.timestamp)
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -293,13 +293,13 @@
       updateData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            const tempData = Object.assign({}, this.dlgData)
+            const tempData = Object.assign({}, this.dialogData)
             tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
             updateArticle(tempData).then(() => {
               for (const v of this.list) {
-                if (v.id === this.dlgData.id) {
+                if (v.id === this.dialogData.id) {
                   const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.dlgData)
+                  this.list.splice(index, 1, this.dialogData)
                   break
                 }
               }

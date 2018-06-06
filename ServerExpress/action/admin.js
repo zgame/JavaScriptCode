@@ -22,9 +22,9 @@ admin.getList = function (req, res, next) {
 admin.addUser = function (req, res, next) {
     let user_name = req.query.username;
     let user_pwd = req.query.pwd;
-    let dashboard = Number(req.query.dashboard==='true');
-    let statis = Number(req.query.statis==='true');
-    let edit = Number(req.query.edit==='true');
+    let dashboard = req.query.dashboard;
+    let statis = req.query.statis;
+    let edit = req.query.edit;
 
     let data = {};
     let connection = db.connection();
@@ -49,9 +49,9 @@ admin.changeUser = function (req, res, next) {
     let id = req.query.id;
     let user_name = req.query.username;
     let user_pwd = req.query.pwd;
-    let dashboard = Number(req.query.dashboard==='true');
-    let statis = Number(req.query.statis==='true');
-    let edit = Number(req.query.edit==='true');
+    let dashboard = req.query.dashboard;
+    let statis = req.query.statis;
+    let edit = req.query.edit;
 
     let data = {};
     let connection = db.connection();
