@@ -11,6 +11,7 @@ let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let adminRouter = require('./routes/admin');
 let tableRouter = require('./routes/table');
+let rechargeRouter = require('./routes/recharge');
 
 let app = express();
 
@@ -38,6 +39,7 @@ app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/table', tableRouter);
+app.use('/recharge', rechargeRouter);
 
 
 //----------------------------------------------------------------------------------------

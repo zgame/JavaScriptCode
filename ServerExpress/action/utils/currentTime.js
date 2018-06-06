@@ -11,6 +11,7 @@ function CurentTime()
 
     let hh = now.getHours();            //时
     let mm = now.getMinutes();          //分
+    let ss = now.getSeconds();          //分
 
     let clock = year + "-";
 
@@ -26,10 +27,14 @@ function CurentTime()
 
     if(hh < 10)
         clock += "0";
-
     clock += hh + ":";
+
     if (mm < 10) clock += '0';
-    clock += mm;
+    clock += mm + ":";
+
+    if (ss < 10) clock += '0';
+    clock += ss;
+
     return(clock);
 }
 module.exports = CurentTime;

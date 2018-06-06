@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function actionGetRechargeList(query) {
   return request({
-    url: '/transaction/list',
+    url: '/recharge/list',
     method: 'get',
     params: query
   })

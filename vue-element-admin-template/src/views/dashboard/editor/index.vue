@@ -20,28 +20,28 @@
             <el-table-column align="center" label='ID' width="50" sortable prop="id">
               <template slot-scope="scope"> {{scope.row.id}}</template>
             </el-table-column>
-            <el-table-column label="Name" width="100" align="center" sortable prop="name">
+            <el-table-column label="账号" width="100" align="center" sortable prop="name">
               <template slot-scope="scope"> {{scope.row.name}}</template>
             </el-table-column>
-            <el-table-column label="Pwd" width="100" align="center" >
+            <el-table-column label="密码" width="100" align="center" >
               <template slot-scope="scope"><span>{{scope.row.pwd}}</span></template>
             </el-table-column>
-            <el-table-column label="Login" width="200" align="center" sortable prop="login_time">
+            <el-table-column label="最后登录时间" width="200" align="center" sortable prop="login_time">
               <template slot-scope="scope">
                 <i class="el-icon-time"></i>
                 <span>{{scope.row.login_time }}</span>
               </template>
             </el-table-column>
-            <el-table-column  label="admin" width="100" align="center" sortable prop="is_admin">
+            <el-table-column  label="管理权限" width="100" align="center" sortable prop="is_admin">
               <template slot-scope="scope"> {{scope.row.is_admin}}</template>
             </el-table-column>
-            <el-table-column align="center" label="dashboard" width="100" sortable prop="is_dashboard">
+            <el-table-column align="center" label="主面板可见" width="100" sortable prop="is_dashboard">
               <template slot-scope="scope"> {{scope.row.is_dashboard}}</template>
             </el-table-column>
-            <el-table-column align="center" label="statis" width="100" sortable prop="is_statis">
+            <el-table-column align="center" label="统计权限" width="100" sortable prop="is_statis">
               <template slot-scope="scope"> {{scope.row.is_statis}}</template>
             </el-table-column>
-            <el-table-column align="center" label="edit" width="100" sortable prop="is_edit">
+            <el-table-column align="center" label="编辑权限" width="100" sortable prop="is_edit">
               <template slot-scope="scope"> {{scope.row.is_edit}}</template>
             </el-table-column>
             <el-table-column label="操作" align="center">

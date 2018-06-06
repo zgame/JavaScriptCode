@@ -142,10 +142,10 @@ export const asyncRouterMap = [
         meta: { title: '修改表格', icon: 'tree' }
       },
       {
-        path: 'admin',
-        name: 'admin',
-        component: () => import('@/views/table/admin'),
-        meta: { title: 'admin test', icon: 'tree' }
+        path: 'zsw',
+        name: 'zsw',
+        component: () => import('@/views/table/zsw'),
+        meta: { title: 'zsw test', icon: 'tree' }
       }
     ]
   },
