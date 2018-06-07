@@ -1,7 +1,7 @@
 let db = require('../model/db');
 let res_json = require('./utils/response_json');
 let recharge = {};
-
+let cTime = require('./utils/currentTime');
 
 //-------------------------获取充值信息----------------------------
 recharge.getList = function (req, res, next) {
@@ -11,10 +11,19 @@ recharge.getList = function (req, res, next) {
     let uid = req.query.uid;
     let channel = req.query.channel;
     let serverid = req.query.serverid;
+    let starttime = req.query.starttime;
+    let endtime = req.query.endtime;
+    let time = req.query.time;      // 前端发过来的是一个数组[starttime, endtime]
 
     let data = {};
     let connection = db.connection();
-    let sql = "SELECT * FROM player_charge_rmb where time between '2018-01-01 00:00:00' and '2019-01-01 00:00:00'";
+    let sql = "SELECT * FROM player_charge_rmb where ";
+
+    if (starttime !== '' && endtime !== '') {
+        sql += "time between '"+starttime+"' and '"+endtime+"'";
+    }else{
+        sql += "time between '2018-01-01' and '2019-01-01'"
+    }
     if (uid !== '') {
         sql += "and user_id ='" + uid + "'";
     }

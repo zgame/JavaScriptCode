@@ -72,6 +72,20 @@ export default new Router({
 // 根据权限增加的侧边栏
 export const asyncRouterMap = [
   {
+    path: '/recharge',
+    component: Layout,
+    meta: { title: '营收', icon: 'example', roles: ['admin'] },
+    children: [
+      {
+        path: 'index',
+        name: 'recharge',
+        component: () => import('@/views/byRecharge/recharge'),
+        meta: { title: '收入表', icon: 'example' }
+        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/form',
     component: Layout,
     meta: { title: '表单', icon: 'form', roles: ['admin'] },
@@ -142,10 +156,10 @@ export const asyncRouterMap = [
         meta: { title: '修改表格', icon: 'tree' }
       },
       {
-        path: 'zsw',
-        name: 'zsw',
-        component: () => import('@/views/table/zsw'),
-        meta: { title: 'zsw test', icon: 'tree' }
+        path: 'dash',
+        name: 'dash',
+        component: () => import('@/views/dash/index'),
+        meta: { title: 'dash', icon: 'tree' }
       }
     ]
   },

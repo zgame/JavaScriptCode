@@ -1,30 +1,36 @@
 <template>
   <div class="app-container">
-    <!--**************************过滤*******************************-->
+    <!--**************************条件搜索*******************************-->
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="请输入UID" v-model="listQuery.uid"></el-input>
-
-      <el-select clearable class="filter-item" style="width: 130px" v-model="listQuery.channel" placeholder="渠道">
-        <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key">
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="按UID查询" v-model="listQuery.uid"></el-input>
+      <!--********下拉选择框*********-->
+      <el-select clearable class="filter-item" style="width: 130px" v-model="listQuery.channel" placeholder="按渠道查询">
+        <el-option v-for="item in  channelTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key">
         </el-option>
       </el-select>
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="按服务器ID查询" v-model="listQuery.serverid"></el-input>
+      <!--********时间选择框********-->
+      <el-date-picker v-model="listQuery.time" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2"></el-date-picker>
+      <!--<el-date-picker type="date" placeholder="开始时间" v-model="listQuery.starttime" style="width: 200px;"></el-date-picker>-->
+      <!--<el-date-picker type="date" placeholder="截止时间" v-model="listQuery.endtime" style="width: 200px;"></el-date-picker>-->
+      <!--********按钮********-->
+      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeYestoday">昨天</el-button>
+      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeToday">今天</el-button>
+      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeOneWeak">一周</el-button>
 
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="ServerID" v-model="listQuery.serverid"></el-input>
-
-
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">开始搜索</el-button>
       <el-button class="filter-item" type="warning" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出Excel</el-button>
     </div>
     <br>
     <!--**************************表格*******************************-->
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row stripe default-sort = "{prop: 'name', order: 'descending'}">
+    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row stripe>
       <el-table-column align="center" label='UID' width="150" sortable prop="user_id">
         <template slot-scope="scope"> {{scope.row.user_id}}</template>
       </el-table-column>
-      <el-table-column label="渠道" width="100" align="center" sortable prop="platform_id">
+      <el-table-column label="渠道" width="200" align="center" sortable prop="platform_id">
         <template slot-scope="scope">
           <span class="link-type">{{scope.row.title}}</span>
-          <el-tag>{{scope.row.platform_id | typeFilter}}</el-tag>
+          <el-tag>{{scope.row.platform_id | typeFilter}}({{ scope.row.platform_id }})</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="服务器" width="100" align="center" sortable prop="server_id">
@@ -69,9 +75,11 @@
 
 
 <script>
+  import waves from '@/directive/waves' // 水波纹指令
   import { actionGetRechargeList } from '@/api/recharge'
+  import { parseTime } from '@/utils'
 
-  const calendarTypeOptions = [
+  const channelTypeOptions = [
     { key: '20', display_name: 'UC' },
     { key: '888888', display_name: '自有渠道' },
     { key: '255', display_name: '华为' },
@@ -79,16 +87,20 @@
   ]
 
   // arr to obj ,such as { CN : "China", US : "USA" }
-  const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+  const calendarTypeKeyValue = channelTypeOptions.reduce((acc, cur) => {
     acc[cur.key] = cur.display_name
     return acc
   }, {})
 
   export default {
+    directives: {
+      waves
+    },
     data() {
       return {
         list: null,
         listLoading: true,
+        //* **********表格显示******************
         dlgData: {
           uid: '',
           platform_id: 0,
@@ -100,15 +112,48 @@
           time: '',
           rmb: 0
         },
+        //* **********请求查询参数******************
         listQuery: {
           page: 1,
           limit: 10,
           uid: '',
           channel: '',
-          serverid: ''
+          serverid: '',
+          starttime: '',
+          endtime: '',
+          time: []
         },
+        channelTypeOptions,
         total: 0,
-        downloadLoading: false
+        downloadLoading: false,
+        //* **********日期选择器******************
+        pickerOptions2: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        }
       }
     },
     filters: {
@@ -143,6 +188,45 @@
       // --------------------------------搜索--------------------------------
       handleFilter() {
         this.listQuery.page = 1
+        // 处理成标准日期字符串
+        // console.info('' + this.listQuery.time)
+        if (this.listQuery.time === null) {
+          this.listQuery.starttime = ''
+          this.listQuery.endtime = ''
+        } else {
+          this.listQuery.starttime = parseTime(this.listQuery.time[0]).substring(0, 10)
+          this.listQuery.endtime = parseTime(this.listQuery.time[1]).substring(0, 10)
+        }
+
+        this.getUserList()
+      },
+      // --------------------------------一周--------------------------------
+      handleTimeOneWeak() {
+        this.listQuery.page = 1
+        const week = new Date()
+        week.setTime(week.getTime() - 3600 * 1000 * 24 * 7)
+        this.listQuery.starttime = parseTime(week).substring(0, 10)
+        this.listQuery.endtime = parseTime(new Date()).substring(0, 10)
+        this.listQuery.time = [this.listQuery.starttime, this.listQuery.endtime]
+        this.getUserList()
+      },
+      // --------------------------------今天--------------------------------
+      handleTimeToday() {
+        this.listQuery.page = 1
+        const day = new Date()
+        day.setTime(day.getTime() + 3600 * 1000 * 24)
+        this.listQuery.starttime = parseTime(new Date()).substring(0, 10)
+        this.listQuery.endtime = parseTime(day).substring(0, 10)
+        this.listQuery.time = [this.listQuery.starttime, this.listQuery.endtime]
+        this.getUserList()
+      }, // --------------------------------昨天--------------------------------
+      handleTimeYestoday() {
+        this.listQuery.page = 1
+        const day = new Date()
+        day.setTime(day.getTime() - 3600 * 1000 * 24)
+        this.listQuery.starttime = parseTime(day).substring(0, 10)
+        this.listQuery.endtime = parseTime(new Date()).substring(0, 10)
+        this.listQuery.time = [this.listQuery.starttime, this.listQuery.endtime]
         this.getUserList()
       },
       // --------------------------------导出excel--------------------------------

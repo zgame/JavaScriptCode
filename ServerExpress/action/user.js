@@ -1,7 +1,7 @@
 let db = require('../model/db');
 let res_json = require('./utils/response_json');
 let tokens = require('./utils/token');
-let currentTime = require('./utils/currentTime');
+let cTime = require('./utils/currentTime');
 let user = {};
 
 //-------------------------用户登录----------------------------
@@ -35,7 +35,7 @@ let user = {};
 
                 // 更新一下登录的时间
                 let connection = db.connection();
-                let login_time = currentTime();
+                let login_time = cTime.CurrentTime();
                 let sql = "update user set login_time = '"+ login_time +"' where name = '" + user_name + "'";
                 connection.query(sql,function (err, result) {
                     if (err) {

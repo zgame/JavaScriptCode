@@ -8,7 +8,7 @@
       <!--<github-corner></github-corner>-->
       <div class="info-container">
         <span class="display_name">{{name}}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;"> 欢迎入坑！ </span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;"> 权限管理！ </span>
       </div>
     </div>
     <el-row :gutter="20">
@@ -16,7 +16,7 @@
       <el-col :span="18">
         <div class="grid-content bg-purple"></div>
         <div class="app-container">
-          <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row  default-sort = "{prop: 'name', order: 'descending'}">
+          <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
             <el-table-column align="center" label='ID' width="50" sortable prop="id">
               <template slot-scope="scope"> {{scope.row.id}}</template>
             </el-table-column>
@@ -120,6 +120,7 @@
         list: null,
         listLoading: true,
         dialogFormVisible: false,
+        // **********表格*************
         dlgData: {
           id: 0,
           username: '',
@@ -128,15 +129,18 @@
           statis: 0,
           edit: 0
         },
+        // **********弹窗变量*************
         dialogStatus: '',
         textMap: {
           update: 'Edit',
           create: 'Create'
         },
+        // **********校验规则*************
         rules: {
           username: [{ required: true, message: '必须有名字', trigger: 'change' }, { min: 5, max: 9, message: '长度在 5 到 9 个字符', trigger: 'blur' }],
           pwd: [{ required: true, message: '必须有密码', trigger: 'blur' }, { min: 5, max: 9, message: '长度在 5 到 9 个字符', trigger: 'blur' }]
         },
+        // **********分页*************
         listQuery: {
           page: 1,
           limit: 10
