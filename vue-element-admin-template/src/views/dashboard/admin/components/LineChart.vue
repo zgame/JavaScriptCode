@@ -103,7 +103,7 @@ export default {
         legend: {
           data: ['expected', 'actual']
         },
-        series: [{
+        series: [{// --------------红色线--------------
           name: 'expected', itemStyle: {
             normal: {
               color: '#FF005A',
@@ -119,7 +119,7 @@ export default {
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
-        {
+        {// --------------蓝色线--------------
           name: 'actual',
           smooth: true,
           type: 'line',
