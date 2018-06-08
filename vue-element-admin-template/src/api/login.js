@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+// 登录 -- 登录
 export function login(username, password) {
   console.debug('api login')
   return request({
@@ -11,7 +12,7 @@ export function login(username, password) {
     }
   })
 }
-
+// 登录 -- 获取信息
 export function getInfo(token) {
   console.debug('api getInfo')
   return request({
@@ -22,7 +23,7 @@ export function getInfo(token) {
     }
   })
 }
-
+// 登录 -- 登出
 export function logout() {
   console.debug('api logout')
   return request({

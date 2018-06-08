@@ -11,8 +11,8 @@ export default {
   mixins: [resize],
   props: {
     className: { type: String, default: 'chart' },
-    width: { type: String, default: '100%' },
-    height: { type: String, default: '350px' },
+    width: { type: String, default: '88%' },
+    height: { type: String, default: '250px' },
     // autoResize: { type: Boolean, default: true },
     chartData: { type: Object }
   },
@@ -41,54 +41,57 @@ export default {
     }
   },
   methods: {
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ Data1, chartTitle, chartXaxis } = {}) {
       this.chart.setOption({
         // backgroundColor: '#394056',
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: chartXaxis,
           boundaryGap: false,
           axisTick: { show: true }
         },
         grid: { left: 10, right: 10, bottom: 20, top: 30, containLabel: true },
         tooltip: { trigger: 'axis', axisPointer: { type: 'cross' }, padding: [5, 10] },
         yAxis: { axisTick: { show: false }},
-        legend: { data: ['预期', '实际'] },
-        series: [{// --------------红色线--------------
-          name: '预期', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
+        legend: { data: chartTitle },
+        series: [
+          {// --------------红色线--------------
+            name: chartTitle[0], itemStyle: {
+              normal: {
                 color: '#FF005A',
-                width: 2
+                lineStyle: {
+                  color: '#FF005A',
+                  width: 2
+                }
               }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {// --------------蓝色线--------------
-          name: '实际',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
-                color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
-              }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+            },
+            smooth: true,
+            type: 'line',
+            data: Data1,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          }
+        // ,
+        // {// --------------蓝色线--------------
+        //   name: chartTitle[1],
+        //   smooth: true,
+        //   type: 'line',
+        //   itemStyle: {
+        //     normal: {
+        //       color: '#3888fa',
+        //       lineStyle: {
+        //         color: '#3888fa',
+        //         width: 2
+        //       },
+        //       areaStyle: {
+        //         color: '#f3f8ff'
+        //       }
+        //     }
+        //   },
+        //   data: Data2,
+        //   animationDuration: 2800,
+        //   animationEasing: 'quadraticOut'
+        // }
+        ]
       })
     },
     initChart() {

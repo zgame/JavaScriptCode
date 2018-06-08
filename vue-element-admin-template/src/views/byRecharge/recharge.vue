@@ -22,6 +22,13 @@
       <el-button class="filter-item" type="warning" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出Excel</el-button>
     </div>
     <br>
+
+    <!--**************************图表*******************************-->
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart :chart-data="lineChartData"></line-chart>
+    </el-row>
+
+
     <!--**************************表格*******************************-->
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row stripe>
       <el-table-column align="center" label='UID' width="150" sortable prop="user_id">
@@ -70,6 +77,9 @@
                      :page-sizes="[5,10,20,50,100,200,2000]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+
+
+
   </div>
 </template>
 
@@ -78,6 +88,7 @@
   import waves from '@/directive/waves' // 水波纹指令
   import { actionGetRechargeList } from '@/api/recharge'
   import { parseTime, pickerOptions } from '@/utils'
+  import LineChart from '@/components/Charts/LineChart'
 
   const channelTypeOptions = [
     { key: '20', display_name: 'UC' },
@@ -93,6 +104,9 @@
   }, {})
 
   export default {
+    components: {
+      LineChart
+    },
     directives: {
       waves
     },
@@ -129,6 +143,14 @@
         //* **********日期选择器******************
         pickerOptions2: {
           shortcuts: pickerOptions
+        },
+        //* **********图表******************
+        lineChartData: {
+          Data1: [],
+          // Data2: [120, 82, 91, 154, 162, 140, 130],
+          // Data3: [620, 182, 291, 1254, 1262, 1140, 1130],
+          chartTitle: ['充值金额'],
+          chartXaxis: []
         }
       }
     },
@@ -150,6 +172,14 @@
           this.list = response.data.items
           this.listLoading = false
           this.total = response.data.total
+
+          // ------设置图表的显示----
+          this.lineChartData.Data1 = []
+          this.lineChartData.chartXaxis = []
+          for (const value of this.list) {
+            this.lineChartData.Data1.push(value.rmb)
+            this.lineChartData.chartXaxis.push(value.time)
+          }
         })
       },
       // --------------------------------分页--------------------------------
@@ -166,12 +196,19 @@
         this.listQuery.page = 1
         // 处理成标准日期字符串
         // console.info('' + this.listQuery.time)
+
         if (this.listQuery.time === null) {
           this.listQuery.starttime = ''
           this.listQuery.endtime = ''
         } else {
-          this.listQuery.starttime = parseTime(this.listQuery.time[0]).substring(0, 10)
-          this.listQuery.endtime = parseTime(this.listQuery.time[1]).substring(0, 10)
+          if (typeof this.listQuery.time[0] === 'string') {
+            // 因为快捷按钮给time赋值成了string，所以要判断一下
+            this.listQuery.starttime = this.listQuery.time[0]
+            this.listQuery.endtime = this.listQuery.time[1]
+          } else {
+            this.listQuery.starttime = parseTime(this.listQuery.time[0]).substring(0, 10)
+            this.listQuery.endtime = parseTime(this.listQuery.time[1]).substring(0, 10)
+          }
         }
 
         this.getUserList()
