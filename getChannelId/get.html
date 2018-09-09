@@ -1,0 +1,93 @@
+
+<!--采用的插件-->
+<!--https://github.com/zenorocha/clipboard.js-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zsw getChannelId</title>
+
+</head>
+<body onload="clickButton()">
+
+<p id="demo">ChannelId:</p>
+<br>
+
+<!--<button class="btn" id="bbt">Copy</button>-->
+
+
+<form id = "form1">
+    <input class="btn" type="button" id="bbt" onclick="clickButton()"
+           value="Button 1" />
+</form>
+
+<!--&lt;!&ndash;使用data-clipboard-target属性指定被复制的标签&ndash;&gt;-->
+<!--&lt;!&ndash;使用data-clipboard-action属性指定一些操作，copy（复制），cut（剪切）&ndash;&gt;-->
+<!--&lt;!&ndash;注意：cut 操作仅适用于<textarea>和<input>&ndash;&gt;-->
+<!--<div style="margin:2em">-->
+    <!--<textarea id="id_text"></textarea>-->
+    <!--<button type="button" id="id_copy"-->
+            <!--data-clipboard-target="#id_text"-->
+            <!--data-clipboard-action="copy">点击复制-->
+    <!--</button>-->
+<!--</div>-->
+
+
+<script src="clipboard.js"></script>
+<script>
+    function clickButton()
+    {
+        document.getElementById('bbt').click();
+        console.log("kkkkkkkkk");
+    }
+
+
+    var id = getQueryVariable("id");
+    document.getElementById("demo").innerHTML = "ChannelId:"+id;
+    // 点击copy到剪切板
+    // document.getElementById("form1").submit();
+
+
+
+    // redirect 到appStore
+
+
+
+    // 获取get的参数
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+
+
+    // 支持safari的剪切板方法
+
+    var clipboard = new ClipboardJS('.btn', {
+        text: function() {
+            return id;
+        }
+    });
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+
+
+    // clipboard.set()
+    // clipboard.setData('text/plain',"fffff");
+
+
+</script>
+<br>
+</body>
+</html>
