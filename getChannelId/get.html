@@ -18,9 +18,9 @@
 <!--<button class="btn" id="bbt">Copy</button>-->
 
 
-<form id = "form1">
+<form id = "form1" onload="submit()">
     <input class="btn" type="button" id="bbt" onclick="clickButton()"
-           value="Button 1" />
+           value="点击按钮copy渠道id" />
 </form>
 
 <!--&lt;!&ndash;使用data-clipboard-target属性指定被复制的标签&ndash;&gt;-->
@@ -37,9 +37,15 @@
 
 <script src="clipboard.js"></script>
 <script>
+    window.onload = function(){
+        //用id
+        document.getElementById("bbt").click();
+
+    }
+
     function clickButton()
     {
-        document.getElementById('bbt').click();
+        //document.getElementById('bbt').click();
         console.log("kkkkkkkkk");
     }
 
@@ -72,14 +78,17 @@
 
     var clipboard = new ClipboardJS('.btn', {
         text: function() {
-            return id;
+            return "33";
         }
     });
     clipboard.on('success', function(e) {
         console.log(e);
+        console.log("成功copy渠道id："+ id);
     });
     clipboard.on('error', function(e) {
         console.log(e);
+        alert('请选择“拷贝”进行复制!')
+        console.log("失败");
     });
 
 
