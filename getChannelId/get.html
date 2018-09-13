@@ -10,58 +10,46 @@
     <title>zsw getChannelId</title>
 
 </head>
-<body onload="clickButton()">
+<body>
 
 <p id="demo">ChannelId:</p>
 <br>
 
-<!--<button class="btn" id="bbt">Copy</button>-->
+<button class="btn" id="bbt">点击按钮copy渠道id</button>
 
 
-<form id = "form1" onload="submit()">
-    <input class="btn" type="button" id="bbt" onclick="clickButton()"
-           value="点击按钮copy渠道id" />
-</form>
-
-<!--&lt;!&ndash;使用data-clipboard-target属性指定被复制的标签&ndash;&gt;-->
-<!--&lt;!&ndash;使用data-clipboard-action属性指定一些操作，copy（复制），cut（剪切）&ndash;&gt;-->
-<!--&lt;!&ndash;注意：cut 操作仅适用于<textarea>和<input>&ndash;&gt;-->
-<!--<div style="margin:2em">-->
-    <!--<textarea id="id_text"></textarea>-->
-    <!--<button type="button" id="id_copy"-->
-            <!--data-clipboard-target="#id_text"-->
-            <!--data-clipboard-action="copy">点击复制-->
-    <!--</button>-->
-<!--</div>-->
+<!--<form id = "form1" onload="submit()">-->
+    <!--<input class="btn" type="button" id="bbt" onclick="clickButton()"-->
+           <!--value="点击按钮copy渠道id" />-->
+<!--</form>-->
 
 
-<script src="clipboard.js"></script>
+
+<script src="clipboard.min.js"></script>
+
 <script>
-    window.onload = function(){
-        //用id
-        document.getElementById("bbt").click();
-
-    }
-
-    function clickButton()
-    {
-        //document.getElementById('bbt').click();
-        console.log("kkkkkkkkk");
-    }
+    // window.onload = function(){
+    //     //用id
+    //     document.getElementById("bbt").click();
+    //
+    // }
+    //
+    // function clickButton()
+    // {
+    //     //document.getElementById('bbt').click();
+    //     console.log("kkkkkkkkk");
+    // }
 
 
     var id = getQueryVariable("id");
     document.getElementById("demo").innerHTML = "ChannelId:"+id;
-    // 点击copy到剪切板
-    // document.getElementById("form1").submit();
-
 
 
     // redirect 到appStore
 
 
 
-    // 获取get的参数
+    // -------------获取get的参数-------------------
     function getQueryVariable(variable)
     {
         var query = window.location.search.substring(1);
@@ -74,11 +62,11 @@
     }
 
 
-    // 支持safari的剪切板方法
+    // --------------支持safari的剪切板方法-------------
 
     var clipboard = new ClipboardJS('.btn', {
         text: function() {
-            return "33";
+            return id;
         }
     });
     clipboard.on('success', function(e) {
@@ -92,11 +80,12 @@
     });
 
 
-    // clipboard.set()
-    // clipboard.setData('text/plain',"fffff");
 
 
 </script>
+
+
+
 <br>
 </body>
 </html>
