@@ -12,6 +12,7 @@ let usersRouter = require('./routes/users');
 let adminRouter = require('./routes/admin');
 let tableRouter = require('./routes/table');
 let rechargeRouter = require('./routes/recharge');
+let server_stateRouter = require('./routes/server_state');
 
 let app = express();
 
@@ -40,6 +41,7 @@ app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/table', tableRouter);
 app.use('/recharge', rechargeRouter);
+app.use('/server_state', server_stateRouter);
 
 
 //----------------------------------------------------------------------------------------

@@ -25,9 +25,9 @@ db.close = function (connection) {
 db.connection = function () {
     //数据库配置
     let connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'zsw1',
-        password: 'zsw123',
+        host: '172.16.140.123',
+        user: 'root',
+        password: 'Soonyo123!',
         database: 'by_statis_db',
         port: 3306
     });
