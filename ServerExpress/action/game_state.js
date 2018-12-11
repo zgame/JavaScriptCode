@@ -5,11 +5,11 @@ let server_state = {};
 
 server_state.list = function(req, res, next) {
 
-    let limit =  req.query.limit;
-    let page =  req.query.page;
+    let limit = req.query.limit;
+    let page = req.query.page;
     let data = {};
     let connection = db.connection();
-    let sql = "SELECT * FROM server_state ";
+    let sql = "SELECT * FROM game_state ";
     connection.query(sql, function (err, result) {
         if (err) {
             console.log('[SELECT  ERROR] - ', err.message);

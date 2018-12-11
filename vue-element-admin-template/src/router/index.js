@@ -86,6 +86,20 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/server_state',
+    component: Layout,
+    meta: { title: '服务器状态', icon: 'example', roles: ['admin'] },
+    children: [
+      {
+        path: 'index',
+        name: 'server_state',
+        component: () => import('@/views/serverState/index'),
+        meta: { title: '服务器状态', icon: 'example' }
+        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/form',
     component: Layout,
     meta: { title: '表单', icon: 'form', roles: ['admin'] },

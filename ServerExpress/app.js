@@ -13,6 +13,7 @@ let adminRouter = require('./routes/admin');
 let tableRouter = require('./routes/table');
 let rechargeRouter = require('./routes/recharge');
 let server_stateRouter = require('./routes/server_state');
+let game_stateRouter = require('./routes/game_state');
 
 let app = express();
 
@@ -42,6 +43,7 @@ app.use('/admin', adminRouter);
 app.use('/table', tableRouter);
 app.use('/recharge', rechargeRouter);
 app.use('/server_state', server_stateRouter);
+app.use('/game_state', game_stateRouter);
 
 
 //----------------------------------------------------------------------------------------

@@ -23,6 +23,8 @@ dbRedis.hget = function(client,dir,key){
         console.log("value:      ",value)
     })
 
+
+
     client.keys('All*',function (err,value){
         console.log("keys:      ",value)
     })
