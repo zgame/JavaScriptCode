@@ -13,13 +13,16 @@ recharge.getList = function (req, res, next) {
     let serverid = req.query.serverid;
     let starttime = req.query.starttime;
     let endtime = req.query.endtime;
-    let time = req.query.time;      // 前端发过来的是一个数组[starttime, endtime]
+    let time = req.query.time;      // 前端发过来的是一个数组[starttime, endtime] ， 备用
 
     let data = {};
     let connection = db.connection();
     let sql = "SELECT * FROM player_charge_rmb where ";
 
-    if (starttime !== '' && endtime !== '') {
+
+    // console.info('starttime:'+starttime);
+    // console.info('endtime:'+endtime);
+    if (starttime !== '' && endtime !== ''&& starttime!== "0-0-0 0:0:" && endtime!== "0-0-0 0:0:" ) {
         sql += "time between '"+starttime+"' and '"+endtime+"'";
     }else{
         sql += "time between '2018-01-01' and '2019-01-01'"

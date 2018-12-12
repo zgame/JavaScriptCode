@@ -16,7 +16,7 @@
       <!--********按钮********-->
       <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeYestoday">昨天</el-button>
       <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeToday">今天</el-button>
-      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeOneWeak">一周</el-button>
+      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeOneWeak">前一周</el-button>
 
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">开始搜索</el-button>
       <el-button class="filter-item" type="warning" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出Excel</el-button>
@@ -135,7 +135,7 @@
           serverid: '',
           starttime: '',
           endtime: '',
-          time: []
+          time: [] // 备用
         },
         channelTypeOptions,
         total: 0,

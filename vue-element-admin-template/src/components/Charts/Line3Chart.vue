@@ -52,7 +52,21 @@ export default {
         grid: { left: 10, right: 10, bottom: 20, top: 30, containLabel: true },
         tooltip: { trigger: 'axis', axisPointer: { type: 'cross' }, padding: [5, 10] },
         yAxis: { axisTick: { show: false }},
-        legend: { data: chartTitle },
+        // legend: { data: ['预期', '实际'] },
+        legend: {
+          // top: 20,
+          // icon: 'rect',
+          // itemWidth: 14,
+          // itemHeight: 5,
+          // itemGap: 13,
+          // data: ['CMCC', 'CTCC', 'CUCC'],
+          // right: '4%',
+          // textStyle: {
+          //   fontSize: 12,
+          //   color: '#F1F1F3'
+          // }
+          data: chartTitle
+        },
         series: [
           {// --------------红色线--------------
             name: chartTitle[0], itemStyle: {

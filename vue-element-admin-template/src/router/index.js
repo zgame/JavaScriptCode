@@ -86,6 +86,20 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/server_list',
+    component: Layout,
+    meta: { title: '服务器列表', icon: 'example', roles: ['admin'] },
+    children: [
+      {
+        path: 'index',
+        name: 'server_list',
+        component: () => import('@/views/serverList/index'),
+        meta: { title: '服务器列表', icon: 'example' }
+        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/server_state',
     component: Layout,
     meta: { title: '服务器状态', icon: 'example', roles: ['admin'] },
@@ -95,6 +109,20 @@ export const asyncRouterMap = [
         name: 'server_state',
         component: () => import('@/views/serverState/index'),
         meta: { title: '服务器状态', icon: 'example' }
+        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/game_state',
+    component: Layout,
+    meta: { title: '游戏状态', icon: 'example', roles: ['admin'] },
+    children: [
+      {
+        path: 'index',
+        name: 'game_state',
+        component: () => import('@/views/gameState/index'),
+        meta: { title: '游戏状态', icon: 'example' }
         // meta: { title: '表单', icon: 'form', roles: ['admin'] }
       }
     ]
