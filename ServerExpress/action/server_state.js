@@ -1,6 +1,6 @@
 let db = require('../model/db');
 let res_json = require('./utils/response_json');
-let deepClone = require('./utils/deepClone');
+let ztime = require('./utils/currentTime');
 let server_state = {};
 
 server_state.list = function(req, res, next) {
@@ -22,12 +22,15 @@ server_state.list = function(req, res, next) {
     if (starttime !== '' && endtime !== '' && starttime!== "0-0-0 0:0:" && endtime!== "0-0-0 0:0:" ) {
         sql += "time between '"+starttime+"' and '"+endtime+"'";
     }else{
-        sql += "time between '2018-01-01' and '2019-01-01'"
+        sql += "time between '" +ztime.ToDay()+"' and '"+ ztime.Tomorrow()+"'"
+        // sql += "time between '2018-01-01' and '2019-01-01'"
     }
     // 如果有服务器的ip
     if (serverid !== '') {
         sql += "and server_ip ='" + serverid + "'";
     }
+
+    // sql += " limit 1000";
     // console.info('sql:'+sql);
 
 

@@ -54,22 +54,31 @@
           <el-tag>{{scope.row.player_num}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="桌子数量" width="110" align="center">
+      <el-table-column label="桌子数量" width="50" align="center">
         <template slot-scope="scope">
           {{scope.row.table_num}}
         </template>
       </el-table-column>
-      <el-table-column label="发送保量" width="200" align="center">
+      <el-table-column label="发送保量" width="100" align="center">
         <template slot-scope="scope">
           {{scope.row.send_num}}
         </template>
       </el-table-column>
 
 
-      <el-table-column align="center" prop="created_at" label="接收包量" width="200">
+      <el-table-column align="center" label="接收包量" width="100">
         <template slot-scope="scope">
-          <!--<i class="el-icon-time"></i>-->
-          <span>{{scope.row.rece_num}}</span>
+          {{scope.row.rece_num}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="发送拥堵" width="50">
+        <template slot-scope="scope">
+          <el-tag>{{scope.row.write_chan}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="数据错误" width="50">
+        <template slot-scope="scope">
+          <el-tag>{{scope.row.head_err}}</el-tag>
         </template>
       </el-table-column>
 
