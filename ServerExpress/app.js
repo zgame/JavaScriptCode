@@ -24,7 +24,8 @@ app.set('view engine', 'ejs');
 
 //--------------------------------跨域设置------------------------------------------
 let allowCrossDomain = function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://0.0.0.0:9528'); //必须重新设置，把origin的域加上去
+    // res.header('Access-Control-Allow-Origin', 'http://172.16.140.131:9528'); //必须重新设置，把origin的域加上去
+    res.header('Access-Control-Allow-Origin', 'http://' + process.env.HOST + ':9528'); //必须重新设置，把origin的域加上去
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'x-custom,Origin, X-Requested-With, Content-Type, Accept,x-token');
     res.header('Access-Control-Allow-Credentials', 'true');//和客户端对应，必须设置以后，才能接收cookie.
