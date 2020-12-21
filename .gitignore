@@ -32,3 +32,5 @@ ServerExpress/node_modules/
 VueProject/node_modules/
 vue-element-admin-master/node_modules/
 vue-element-admin-template/node_modules/
+ServerTB/vue-element-admin-template/node_modules/
+ServerTB/ServerExpress/node_modules/
