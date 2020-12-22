@@ -3,6 +3,7 @@ var router = express.Router();
 
 let table = require("../action/table");
 
+
 router.get('/list', function(req, res, next) {
     table.list(req, res, next);
 });

@@ -3,7 +3,7 @@ let dbRedis = {}
 
 //-----------------连接部分-----------------------
 dbRedis.connection = function () {
-    let client = redis.createClient(6382, '192.168.101.94')
+    let client = redis.createClient(6382, '192.168.101.94')         // 这里设置redis数据库
     client.auth('123456',function () {
     // console.log("pwd ok")
     });

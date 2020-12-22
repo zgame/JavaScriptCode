@@ -25,7 +25,7 @@ dbMysql.close = function (connection) {
 //获取数据库连接
 dbMysql.connection = function () {
     //数据库配置
-    let connection = mysql.createConnection({
+    let connection = mysql.createConnection({               // 这里设置mysql数据库
         host: '192.168.0.207',
         user: 'root',
         password: 'brQqIpRZ',
