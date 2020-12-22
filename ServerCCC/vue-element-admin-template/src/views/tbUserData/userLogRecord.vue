@@ -1,0 +1,290 @@
+<template>
+  <div class="app-container">
+    <!--**************************条件搜索*******************************-->
+    <div class="filter-container">
+      <!--<el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="按UID查询" v-model="listQuery.uid"></el-input>-->
+      <!--********下拉选择框*********-->
+      <!--<el-select clearable class="filter-item" style="width: 130px" v-model="listQuery.channel" placeholder="按渠道查询">-->
+      <!--<el-option v-for="item in  channelTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key">-->
+      <!--</el-option>-->
+      <!--</el-select>-->
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="玩家ID查询" v-model="listQuery.userId"></el-input>
+      <!--<el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="游戏类型查询" v-model="listQuery.gameid"></el-input>-->
+      <!--********时间选择框********-->
+      <el-date-picker v-model="listQuery.time" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2"></el-date-picker>
+      <!--<el-date-picker type="date" placeholder="开始时间" v-model="listQuery.starttime" style="width: 200px;"></el-date-picker>-->
+      <!--<el-date-picker type="date" placeholder="截止时间" v-model="listQuery.endtime" style="width: 200px;"></el-date-picker>-->
+      <!--********按钮********-->
+      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeYestoday">昨天</el-button>
+      <el-button class="filter-item" type="success" v-waves icon="el-icon-time" @click="handleTimeToday">今天</el-button>
+      <el-button class="filter-item" type="danger" round v-waves icon="el-icon-time" @click="handleTimeOneWeak">前一周</el-button>
+
+      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">开始搜索</el-button>
+      <!--<el-button class="filter-item" type="warning" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出Excel</el-button>-->
+    </div>
+    <br>
+
+    <!--**************************图表*******************************-->
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart :chart-data="lineChartData"></line-chart>
+    </el-row>
+
+    <!--******************************************List*******************************************-->
+    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row stripe>
+      <el-table-column align="center" label='ID' width="55">
+        <template slot-scope="scope">
+          {{scope.$index}}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="时间" width="120" align="center">
+        <template slot-scope="scope">
+          {{scope.row.time}}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="游戏类型" width="100" align="center">
+        <template slot-scope="scope">
+          <!--<i class="el-icon-time"></i>-->
+          <el-tag>{{scope.row.main_type}}</el-tag>
+          <!--<span>{{scope.row.game_id}}</span>-->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="中奖类型" width="100" align="center">
+        <template slot-scope="scope">
+          {{scope.row.sub_type}}
+        </template>
+      </el-table-column>
+      <el-table-column label="房间倍率" width="100" align="center">
+        <template slot-scope="scope">
+          {{scope.row.room_score}}
+        </template>
+      </el-table-column>
+       <el-table-column label="获得分数" width="200" align="center">
+        <template slot-scope="scope">
+          {{scope.row.get_score}}
+        </template>
+      </el-table-column>
+      <el-table-column label="获得金币" width="150" align="center">
+        <template slot-scope="scope">
+          {{scope.row.get_coin}}
+        </template>
+      </el-table-column>
+      <el-table-column label="获得奖券" width="100" align="center">
+        <template slot-scope="scope">
+          <el-tag>{{scope.row.get_lottery}} </el-tag>
+        </template>
+      </el-table-column>
+      <!--玩家排名-->
+      <!--<el-table-column label="赢Top1" width="200" align="center">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-tag>{{scope.row.player_win1}} </el-tag>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column label="赢Top2" width="200" align="center">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-tag>{{scope.row.player_win2}} </el-tag>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column label="赢Top3" width="200" align="center">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-tag>{{scope.row.player_win3}} </el-tag>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column label="输Top1" width="200" align="center">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-tag>{{scope.row.player_lost1}} </el-tag>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+
+
+
+
+    </el-table>
+    <!--**************************分页*******************************-->
+    <div class="pagination-container">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
+                     :page-sizes="[5,10,20,50,100,200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
+
+  </div>
+</template>
+<script>
+  import { getLogList } from '@/api/tb_user_data'
+  import { parseTime, pickerOptions } from '@/utils'
+  import waves from '@/directive/waves' // 水波纹指令
+  import LineChart from '@/components/Charts/Line3Chart'
+  export default {
+    components: {
+      LineChart
+    },
+    directives: {
+      waves
+    },
+    data() {
+      return {
+        list: null,
+        // **********分页*************
+        listQuery: {
+          page: 1,
+          limit: 10,
+          userId: '',
+          // gameid: '',
+          starttime: '',
+          endtime: '',
+          time: []
+        },
+        total: 0,
+        listLoading: true,
+        //* **********日期选择器******************
+        pickerOptions2: {
+          shortcuts: pickerOptions
+        },
+        //* **********图表******************
+        lineChartData: {
+          Data1: [],
+          Data2: [],
+          Data3: [],
+          chartTitle: ['分数', '金币', '奖券'],
+          chartXaxis: []
+        }
+      }
+    },
+    filters: {
+      statusFilter(status) {
+        const statusMap = {
+          published: 'success',
+          draft: 'gray',
+          deleted: 'danger'
+        }
+        return statusMap[status]
+      }
+    },
+    created() {
+      this.getUserList()
+      this.listQuery.userId = 1000000010
+    },
+    methods: {
+      getUserList() {
+        if (this.listQuery.userId === '') {
+          this.$notify({ title: '提示', message: '需要输入玩家ID!', type: 'warning', duration: 2000 })
+          this.listLoading = false
+          return
+        }
+
+        this.listLoading = true
+        //  ------------------------获取列表------------------------------
+        getLogList(this.listQuery).then(response => {
+          this.list = response.data.items // 用返回的数据给列表赋值
+          this.listLoading = false
+          this.total = response.data.total // 设置总共有多少页面
+
+          if (this.list.length === 0) {
+            this.$notify({ title: '提示', message: response.message, type: 'warning', duration: 2000 })
+          }
+
+          // ------设置图表的显示----
+          this.lineChartData.Data1 = []
+          this.lineChartData.Data2 = []
+          this.lineChartData.Data3 = []
+          this.lineChartData.chartXaxis = []
+          for (const value of this.list) {
+            this.lineChartData.Data1.push(value.get_score)
+            this.lineChartData.Data2.push(value.get_coin)
+            this.lineChartData.Data3.push(value.get_lottery)
+            this.lineChartData.chartXaxis.push(value.time)
+          }
+        })
+      },
+      // --------------------------------分页--------------------------------
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getUserList()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getUserList()
+      },
+      // --------------------------------搜索--------------------------------
+      handleFilter() {
+        this.listQuery.page = 1
+        // 处理成标准日期字符串
+        // console.info('' + this.listQuery.time)
+
+        if (this.listQuery.time === null) {
+          this.listQuery.starttime = ''
+          this.listQuery.endtime = ''
+        } else {
+          if (typeof this.listQuery.time[0] === 'string') {
+            // 因为快捷按钮给time赋值成了string，所以要判断一下
+            this.listQuery.starttime = this.listQuery.time[0]
+            this.listQuery.endtime = this.listQuery.time[1]
+          } else {
+            this.listQuery.starttime = parseTime(this.listQuery.time[0]).substring(0, 10)
+            this.listQuery.endtime = parseTime(this.listQuery.time[1]).substring(0, 10)
+          }
+        }
+
+        this.getUserList()
+      },
+      // --------------------------------一周--------------------------------
+      handleTimeOneWeak() {
+        this.listQuery.page = 1
+        const week = new Date()
+        week.setTime(week.getTime() - 3600 * 1000 * 24 * 7)
+        this.listQuery.starttime = parseTime(week).substring(0, 10)
+        this.listQuery.endtime = parseTime(new Date()).substring(0, 10)
+        this.listQuery.time = [this.listQuery.starttime, this.listQuery.endtime]
+        this.getUserList()
+      },
+      // --------------------------------今天--------------------------------
+      handleTimeToday() {
+        this.listQuery.page = 1
+        const day = new Date()
+        day.setTime(day.getTime() + 3600 * 1000 * 24)
+        this.listQuery.starttime = parseTime(new Date()).substring(0, 10)
+        this.listQuery.endtime = parseTime(day).substring(0, 10)
+        this.listQuery.time = [this.listQuery.starttime, this.listQuery.endtime]
+        this.getUserList()
+      }, // --------------------------------昨天--------------------------------
+      handleTimeYestoday() {
+        this.listQuery.page = 1
+        const day = new Date()
+        day.setTime(day.getTime() - 3600 * 1000 * 24)
+        this.listQuery.starttime = parseTime(day).substring(0, 10)
+        this.listQuery.endtime = parseTime(new Date()).substring(0, 10)
+        this.listQuery.time = [this.listQuery.starttime, this.listQuery.endtime]
+        this.getUserList()
+      }
+    }
+  }
+
+</script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .dashboard-editor-container {
+    background-color: #e3e3e3;
+    min-height: 100vh;
+    padding: 50px 60px 0px;
+    .pan-info-roles {
+      font-size: 12px;
+      font-weight: 700;
+      color: #333;
+      display: block;
+    }
+    .info-container {
+      position: relative;
+      margin-left: 190px;
+      height: 150px;
+      line-height: 200px;
+      .display_name {
+        font-size: 48px;
+        line-height: 48px;
+        color: #212121;
+        position: absolute;
+        top: 25px;
+      }
+    }
+  }
+</style>
