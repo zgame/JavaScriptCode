@@ -2,20 +2,21 @@ let db_mysql = require('../model/dbMysql');
 let res_json = require('./utils/response_json');
 let tokens = require('./utils/token');
 let cTime = require('./utils/currentTime');
-let user = {};
+let adminUser = {};
 
 //-------------------------用户登录----------------------------
- user.login = function(req, res, next) {
+ adminUser.Login = function(req, res, next) {
     // let user_name = req.query.username;
     // let pwd = req.query.password;
     let user_name = req.body.username;
     let pwd = req.body.password;
 
-    console.log("user:",user_name);
+
+    console.log("adminUser:",user_name);
     console.log("pwd:",pwd);
 
     let connection = db_mysql.connection();
-    let  sql = "SELECT pwd FROM user where name = '" + user_name + "'";
+    let  sql = "SELECT pwd FROM admin_user where name = '" + user_name + "'";
     connection.query(sql,function (err, result) {
         db_mysql.close(connection);
         if (err) {
@@ -37,7 +38,7 @@ let user = {};
                 // 更新一下登录的时间
                 let connection = db_mysql.connection();
                 let login_time = cTime.CurrentTime();
-                let sql = "update user set login_time = '"+ login_time +"' where name = '" + user_name + "'";
+                let sql = "update adminUser set login_time = '"+ login_time +"' where name = '" + user_name + "'";
                 connection.query(sql,function (err, result) {
                     db_mysql.close(connection);
                     if (err) {
@@ -55,7 +56,7 @@ let user = {};
     });
 };
 //-------------------------用户信息----------------------------
-user.info =  function(req, res, next) {
+adminUser.Info =  function(req, res, next) {
     let token = req.query.token;
     let data = {};
     // console.debug("tokens.checkToken(token)"+tokens.checkToken(token));
@@ -67,7 +68,7 @@ user.info =  function(req, res, next) {
         // if token == tokens.checkToken(token)
 
         let connection = db_mysql.connection();
-        let  sql = "SELECT is_admin FROM user where name = '" + user_name + "'";
+        let  sql = "SELECT is_admin FROM adminUser where name = '" + user_name + "'";
         connection.query(sql,function (err, result) {
             db_mysql.close(connection);
             if (err) {
@@ -98,11 +99,11 @@ user.info =  function(req, res, next) {
 };
 
 //-------------------------用户登出----------------------------
-user.logout =  function(req, res, next) {
+adminUser.Logout =  function(req, res, next) {
     //{"code":20000,"data":"success"}
     res.send(res_json(true,"success","用户登出"));
 };
 
 
 
-module.exports = user;
+module.exports = adminUser;
