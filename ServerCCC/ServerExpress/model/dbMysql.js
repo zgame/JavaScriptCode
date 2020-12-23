@@ -25,12 +25,12 @@ dbMysql.close = function (connection) {
 //获取数据库连接
 dbMysql.connection = function () {
     //数据库配置
-    let connection = mysql.createConnection({               // 这里设置mysql数据库
-        host: '192.168.0.207',
-        user: 'root',
-        password: 'brQqIpRZ',
-        database: 'game_tb',
-        port: 3307
+    let connection = mysql.createConnection({               // 这里设置mysql数据库, 因为是统计后台， 用不到连接池，就普通连接即可
+        host: '47.92.150.31',
+        user: 'patheaDev',
+        password: 'LncDnQaR502NWaFdCVXMeKacglgnf3',
+        database: 'sandrock',
+        port: 3306
     });
     //数据库连接
     connection.connect(function (err) {

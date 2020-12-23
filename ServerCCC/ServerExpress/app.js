@@ -3,7 +3,7 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
-
+let routes = require('./routes/routesUtils')
 //--------------------------------------------------------------------------
 let app = express();
 
@@ -12,11 +12,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //--------------------------------跨域设置------------------------------------------
 let allowCrossDomain = function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://0.0.0.0:5001'); //必须重新设置，把origin的域加上去
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Origin', '*'); //必须重新设置，把origin的域加上去
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'x-custom,Origin, X-Requested-With, Content-Type, Accept,x-token');
     res.header('Access-Control-Allow-Credentials', 'true');//和客户端对应，必须设置以后，才能接收cookie.
-    next();
+    if (req.method.toLowerCase() === 'options') {
+        res.send(200);  // 让options尝试请求快速结束
+    } else {
+        next();
+    }
 };
 app.use(allowCrossDomain);
 app.use(logger('dev'));
@@ -27,7 +31,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //--------------------------------------路由--------------------------------------------------
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
+let adminUser = require("./action/adminUser");
+
 let adminRouter = require('./routes/admin');
 let tableRouter = require('./routes/table');
 let rechargeRouter = require('./routes/tb_recharge');
@@ -38,8 +43,13 @@ let user_dataRouter = require('./routes/tb_user_data');
 let all_statistic = require('./routes/tb_all_statistic');
 let game_manager = require('./routes/tb_game_manager');
 
-app.use('/', indexRouter);
-app.use('/user', usersRouter);
+
+routes.Get(app,'/',indexRouter.Hello)
+routes.Post(app,'/user/login',adminUser.Login)
+routes.Post(app,'/user/logout',adminUser.Logout)
+routes.Get(app,'/user/info',adminUser.Info)
+
+// app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/table', tableRouter);
 app.use('/recharge', rechargeRouter);
@@ -49,6 +59,9 @@ app.use('/game_state', game_stateRouter);
 app.use('/user_data', user_dataRouter);
 app.use('/all_statistic', all_statistic);
 app.use('/game_manager', game_manager);
+
+
+
 
 
 
