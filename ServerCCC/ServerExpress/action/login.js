@@ -38,8 +38,9 @@ let adminUser = {};
                 // 更新一下登录的时间
                 let connection = db_mysql.connection();
                 let login_time = cTime.CurrentTime();
-                let sql = "update adminUser set login_time = '"+ login_time +"' where name = '" + user_name + "'";
+                let sql = "update admin_user set login_time = '"+ login_time +"' where name = '" + user_name + "'";
                 connection.query(sql,function (err, result) {
+                    console.log("更新了用户登录时间",login_time)
                     db_mysql.close(connection);
                     if (err) {
                         console.log('[更新登录时间  ERROR] - ', err.message);
@@ -68,7 +69,7 @@ adminUser.Info =  function(req, res, next) {
         // if token == tokens.checkToken(token)
 
         let connection = db_mysql.connection();
-        let  sql = "SELECT is_admin FROM adminUser where name = '" + user_name + "'";
+        let  sql = "SELECT is_admin FROM admin_user where name = '" + user_name + "'";
         connection.query(sql,function (err, result) {
             db_mysql.close(connection);
             if (err) {

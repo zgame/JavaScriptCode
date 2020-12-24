@@ -9,7 +9,7 @@ admin.getList = function (req, res, next) {
     let page = req.query.page;
     let data = {};
     let connection = db_mysql.connection();
-    let sql = "SELECT * FROM user ";
+    let sql = "SELECT * FROM admin_user ";
     connection.query(sql, function (err, result) {
         db_mysql.close(connection);
         if (err) {
@@ -32,7 +32,7 @@ admin.addUser = function (req, res, next) {
 
     let data = {};
     let connection = db_mysql.connection();
-    let sql = "insert into user (name,pwd,is_dashboard,is_statis,is_edit) values ('"+user_name+
+    let sql = "insert into admin_user (name,pwd,is_dashboard,is_statis,is_edit) values ('"+user_name+
         "','"+user_pwd+
         "','"+dashboard+
         "','"+statis+
@@ -60,7 +60,7 @@ admin.changeUser = function (req, res, next) {
 
     let data = {};
     let connection = db_mysql.connection();
-    let sql = "update user set name = '"+ user_name+
+    let sql = "update admin_user set name = '"+ user_name+
         "', pwd = '"+ user_pwd+
         "', is_dashboard = '"+ dashboard+
         "', is_statis = '"+ statis+
@@ -83,7 +83,7 @@ admin.delUser = function (req, res, next) {
     let id = req.query.id;
     let data = {};
     let connection = db_mysql.connection();
-    let sql = "DELETE FROM user WHERE id= '"+id+"' ";
+    let sql = "DELETE FROM admin_user WHERE id= '"+id+"' ";
     connection.query(sql, function (err, result) {
         db_mysql.close(connection);
         if (err) {

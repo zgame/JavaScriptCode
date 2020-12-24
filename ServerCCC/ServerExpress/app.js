@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //--------------------------------------路由--------------------------------------------------
 let indexRouter = require('./routes/index');
-let adminUser = require("./action/adminUser");
+let adminUser = require("./action/login");
 let admin = require("./action/admin");
 let table = require("./action/table");
 let tb_recharge = require("./action/tb_recharge");
