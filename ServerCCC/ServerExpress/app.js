@@ -32,6 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //--------------------------------------路由--------------------------------------------------
 let indexRouter = require('./routes/index');
 let adminUser = require("./action/adminUser");
+let admin = require("./action/admin");
+
+
 
 let adminRouter = require('./routes/admin');
 let tableRouter = require('./routes/table');
@@ -48,6 +51,12 @@ routes.Get(app,'/',indexRouter.Hello)
 routes.Post(app,'/user/login',adminUser.Login)
 routes.Post(app,'/user/logout',adminUser.Logout)
 routes.Get(app,'/user/info',adminUser.Info)
+routes.Get(app,'/admin', admin.getList)
+routes.Get(app,'/admin/add', admin.addUser)
+routes.Get(app,'/admin/change', admin.changeUser)
+routes.Get(app,'/admin/del', admin.delUser)
+
+
 
 // app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
