@@ -33,18 +33,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 let indexRouter = require('./routes/index');
 let adminUser = require("./action/adminUser");
 let admin = require("./action/admin");
+let table = require("./action/table");
+let tb_recharge = require("./action/tb_recharge");
+let tb_server_state = require("./action/tb_server_state");
+let tb_server_list = require("./action/tb_server_list");
+let tb_user_data = require("./action/tb_user_data");
+let tb_all_statistic = require("./action/tb_all_statistic");
 
-
-
-let adminRouter = require('./routes/admin');
-let tableRouter = require('./routes/table');
-let rechargeRouter = require('./routes/tb_recharge');
-let server_stateRouter = require('./routes/tb_server_state');
-let game_stateRouter = require('./routes/tb_game_state');
-let server_listRouter = require('./routes/tb_server_list');
-let user_dataRouter = require('./routes/tb_user_data');
-let all_statistic = require('./routes/tb_all_statistic');
-let game_manager = require('./routes/tb_game_manager');
 
 
 routes.Get(app,'/',indexRouter.Hello)
@@ -56,17 +51,26 @@ routes.Get(app,'/admin/add', admin.addUser)
 routes.Get(app,'/admin/change', admin.changeUser)
 routes.Get(app,'/admin/del', admin.delUser)
 
+routes.Get(app,'/table/list', table.list)
+routes.Get(app,'/table/list_article', table.list_article)
+routes.Get(app,'/recharge/list', tb_recharge.getList)
+routes.Get(app,'/server_state/list', tb_server_state.list)
+// 服务器列表
+routes.Get(app,'/server_list/list', tb_server_list.list)
+routes.Get(app,'/server_list/add', tb_server_list.add)
+routes.Get(app,'/server_list/change', tb_server_list.change)
+routes.Get(app,'/server_list/del', tb_server_list.del)
+routes.Get(app,'/server_list/get', tb_server_list.clientGet)
+// 玩家
+routes.Get(app,'/user_data/get_user', tb_user_data.getUser)
+routes.Get(app,'/user_data/log_list', tb_user_data.logList)
+routes.Get(app,'/all_statistic/list', tb_all_statistic.getList)
 
 
-// app.use('/user', usersRouter);
-app.use('/admin', adminRouter);
-app.use('/table', tableRouter);
-app.use('/recharge', rechargeRouter);
-app.use('/server_state', server_stateRouter);
-app.use('/server_list', server_listRouter);
+// 路由集合
+let game_stateRouter = require('./routes/tb_game_state');
+let game_manager = require('./routes/tb_game_manager');
 app.use('/game_state', game_stateRouter);
-app.use('/user_data', user_dataRouter);
-app.use('/all_statistic', all_statistic);
 app.use('/game_manager', game_manager);
 
 
