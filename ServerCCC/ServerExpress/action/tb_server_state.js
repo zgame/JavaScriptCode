@@ -14,7 +14,7 @@ tb_server_state.list = function(req, res, next) {
 
     let data = {};
     let connection = db_mysql.connection();
-    let sql = "SELECT * FROM server_state where ";
+    let sql = "SELECT * FROM state_server where ";
 
     // console.info('starttime:'+starttime);
     // console.info('endtime:'+endtime);
