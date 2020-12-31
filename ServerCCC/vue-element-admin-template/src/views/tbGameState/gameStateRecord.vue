@@ -51,9 +51,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="桌子id" width="50" align="center">
+      <el-table-column label="房间id" width="50" align="center">
         <template slot-scope="scope">
-          {{scope.row.table_id}}
+          {{scope.row.room_id}}
         </template>
       </el-table-column>
       <el-table-column label="库存" width="200" align="center">

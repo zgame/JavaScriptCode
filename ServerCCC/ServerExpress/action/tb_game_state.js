@@ -17,7 +17,7 @@ tb_game_state.list = function(req, res, next) {
     let data = {};
     let connection = db_mysql.connection();
 
-    let sql = "SELECT * FROM game_state where true  ";
+    let sql = "SELECT * FROM state_game where true  ";
 
     // if (serverip !== '' || gameid !== '') {
     //     sql += "where "
@@ -65,7 +65,7 @@ tb_game_state.recordList = function(req, res, next) {
     let data = {};
     let connection = db_mysql.connection();
 
-    let sql = "SELECT * FROM game_state_record where true  ";
+    let sql = "SELECT * FROM state_game_record where true  ";
 
     // if (serverip !== '' || gameid !== '') {
     //     sql += "where "
@@ -118,7 +118,7 @@ tb_game_state.pointsList = function(req, res, next) {
     let data = {};
     let connection = db_mysql.connection();
 
-    let sql = "SELECT * FROM zzlog_statistic_points where true  ";
+    let sql = "SELECT * FROM log_statistic_points where true  ";
 
     // if (serverip !== '' || gameid !== '') {
     //     sql += "where "
@@ -171,7 +171,7 @@ tb_game_state.jackpotList = function(req, res, next) {
     let data = {};
     let connection = db_mysql.connection();
 
-    let sql = "SELECT * FROM zzlog_statistic_jackpot where true  ";
+    let sql = "SELECT * FROM log_statistic_jackpot where true  ";
 
     // if (serverip !== '' || gameid !== '') {
     //     sql += "where "
