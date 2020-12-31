@@ -161,34 +161,34 @@ export const asyncRouterMap = [
         meta: { title: '大奖池日志', icon: 'form' }
         // meta: { title: '表单', icon: 'form', roles: ['admin'] }
       },
-      {
-        path: 'game_state_tiger',
-        name: 'game_state_tiger',
-        component: () => import('@/views/tbGameState/gameStateTiger'),
-        meta: { title: '老虎机日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
-      {
-        path: 'game_state_card',
-        name: 'game_state_card',
-        component: () => import('@/views/tbGameState/gameStateCard'),
-        meta: { title: '翻牌日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
-      {
-        path: 'game_state_blood',
-        name: 'game_state_blood',
-        component: () => import('@/views/tbGameState/gameStateBlood'),
-        meta: { title: '热血模式日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
-      {
-        path: 'game_state_wheel',
-        name: 'game_state_wheel',
-        component: () => import('@/views/tbGameState/gameStateWheel'),
-        meta: { title: '轮盘日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
+      // {
+      //   path: 'game_state_tiger',
+      //   name: 'game_state_tiger',
+      //   component: () => import('@/views/tbGameState/gameStateTiger'),
+      //   meta: { title: '老虎机日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
+      // {
+      //   path: 'game_state_card',
+      //   name: 'game_state_card',
+      //   component: () => import('@/views/tbGameState/gameStateCard'),
+      //   meta: { title: '翻牌日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
+      // {
+      //   path: 'game_state_blood',
+      //   name: 'game_state_blood',
+      //   component: () => import('@/views/tbGameState/gameStateBlood'),
+      //   meta: { title: '热血模式日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
+      // {
+      //   path: 'game_state_wheel',
+      //   name: 'game_state_wheel',
+      //   component: () => import('@/views/tbGameState/gameStateWheel'),
+      //   meta: { title: '轮盘日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
       {
         path: 'game_state_mail',
         name: 'game_state_mail',

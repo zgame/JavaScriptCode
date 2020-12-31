@@ -224,7 +224,7 @@ tb_game_state.tigerList = function(req, res, next) {
     let data = {};
     let connection = db_mysql.connection();
 
-    let sql = "SELECT * FROM zzlog_statistic_tiger where true  ";
+    let sql = "SELECT * FROM log_statistic_tiger where true  ";
 
     // if (serverip !== '' || gameid !== '') {
     //     sql += "where "
