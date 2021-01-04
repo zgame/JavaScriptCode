@@ -243,7 +243,7 @@
         this.getUserList()
       },
       editUserData(key, value) {
-        this.$notify({ title: '提示', message: '要改玩家数据:' + key + ' 疯了么？', type: 'error', duration: 2000 })
+        this.$notify({ title: '提示', message: '暂时不能修改玩家数据:' + key + ' ！', type: 'error', duration: 2000 })
       }
       // --------------------------------一周--------------------------------
       // handleTimeOneWeak() {

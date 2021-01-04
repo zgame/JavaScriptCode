@@ -55,23 +55,23 @@ function system_log(req, res, data_base_name) {
 
 //---------------------------------邮件---------------------------------------------------------------------
 tb_game_state_sys.mail = function(req, res, next) {
-    system_log(req, res, "zzlog_statistic_mail");
+    system_log(req, res, "log_statistic_mail");
 };
 //---------------------------------签到---------------------------------------------------------------------
 tb_game_state_sys.signIn = function(req, res, next) {
-    system_log(req, res, "zzlog_statistic_sign_in");
+    system_log(req, res, "log_statistic_sign_in");
 };
-//---------------------------------整点--------------------------------------------------------------------
-tb_game_state_sys.clockGold = function(req, res, next) {
-    system_log(req, res, "zzlog_statistic_clock_gold");
-};
-//---------------------------------vip救济---------------------------------------------------------------------
-tb_game_state_sys.vipDole = function(req, res, next) {
-    system_log(req, res, "zzlog_statistic_vip_dole");
-};
-//---------------------------------幸运轮盘---------------------------------------------------------------------
-tb_game_state_sys.luckyWheel = function(req, res, next) {
-    system_log(req, res, "zzlog_statistic_lucky_wheel");
-};
+// //---------------------------------整点--------------------------------------------------------------------
+// tb_game_state_sys.clockGold = function(req, res, next) {
+//     system_log(req, res, "zzlog_statistic_clock_gold");
+// };
+// //---------------------------------vip救济---------------------------------------------------------------------
+// tb_game_state_sys.vipDole = function(req, res, next) {
+//     system_log(req, res, "zzlog_statistic_vip_dole");
+// };
+// //---------------------------------幸运轮盘---------------------------------------------------------------------
+// tb_game_state_sys.luckyWheel = function(req, res, next) {
+//     system_log(req, res, "zzlog_statistic_lucky_wheel");
+// };
 
 module.exports = tb_game_state_sys;

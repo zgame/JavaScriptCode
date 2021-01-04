@@ -5,6 +5,7 @@ let deepClone = require('./utils/deepClone');
 let cTime = require('./utils/currentTime');
 let tb_game_manager = {};
 
+let redisUrl = "SandRock:GameManager:"
 
 //------------------------------------------------------------------------------------------------------
 // 获得游戏公告
@@ -12,7 +13,7 @@ let tb_game_manager = {};
 tb_game_manager.getNotice = function(req, res, next) {
     let data = {};
     let connection = db_redis.connection();
-    db_redis.hget(connection,"TB:TB_GameManager:GameNotice","GameNotice" , function (notice) {
+    db_redis.hget(connection,redisUrl+"GameNotice","GameNotice" , function (notice) {
         data["items"] = notice;
         data['total'] = 1;
         res.send(res_json(true, data, "获取公告"));
@@ -24,7 +25,7 @@ tb_game_manager.setNotice = function(req, res, next) {
     let notice = req.query.notice;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.hset(connection, "TB:TB_GameManager:GameNotice", "GameNotice", notice);
+    db_redis.hset(connection, redisUrl+"GameNotice", "GameNotice", notice);
     data["items"] = notice;
     data['total'] = 1;
     res.send(res_json(true, data, "保存公告"));
@@ -39,7 +40,7 @@ tb_game_manager.getConfineList = function(req, res, next) {
     let page = req.query.page;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.smembers(connection,"TB:TB_GameManager:GameConfine", function (list) {
+    db_redis.smembers(connection,redisUrl+"GameConfine", function (list) {
         // console.log("confine list: ",typeof  list);
         // console.log("confine list: ",list);
         data["items"] = list.slice(limit * (page - 1), limit * page);
@@ -53,7 +54,7 @@ tb_game_manager.getConfine = function(req, res, next) {
     let userId = req.query.userId;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.sismember( connection,"TB:TB_GameManager:GameConfine", userId ,function (result) {
+    db_redis.sismember( connection,redisUrl+"GameConfine", userId ,function (result) {
         data["items"] = result;
         data['total'] = 1;
         res.send(res_json(true, data, "查询玩家封号"));
@@ -65,7 +66,7 @@ tb_game_manager.setConfine = function(req, res, next) {
     let userId = req.query.userId;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.sadd(connection,"TB:TB_GameManager:GameConfine",  userId, function (result) {
+    db_redis.sadd(connection,redisUrl+"GameConfine",  userId, function (result) {
         data["items"] = result;
         data['total'] = 1;
         res.send(res_json(true, data, "封号"));
@@ -77,7 +78,7 @@ tb_game_manager.delConfine = function(req, res, next) {
     let userId = req.query.userId;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.srem(connection,"TB:TB_GameManager:GameConfine",  userId, function (result) {
+    db_redis.srem(connection,redisUrl+"GameConfine",  userId, function (result) {
         data["items"] = result;
         data['total'] = 1;
         res.send(res_json(true, data, "解除封号"));
@@ -93,7 +94,7 @@ tb_game_manager.delConfine = function(req, res, next) {
 tb_game_manager.getTip = function(req, res, next) {
     let data = {};
     let connection = db_redis.connection();
-    db_redis.lrange(connection,"TB:TB_GameManager:GameTip", 0,-1,function (list) {
+    db_redis.lrange(connection,redisUrl+"GameTip", 0,-1,function (list) {
         // console.log("confine list: ",typeof  list);
         // console.log("confine list: ",list);
         data["items"] = list;
@@ -108,7 +109,7 @@ tb_game_manager.addTip = function(req, res, next) {
     // console.log("tip    ",tip);
     let data = {};
     let connection = db_redis.connection();
-    db_redis.rpush(connection,"TB:TB_GameManager:GameTip", tip.toString(), function (result) {
+    db_redis.rpush(connection,redisUrl+"GameTip", tip.toString(), function (result) {
         data["items"] = result;
         data['total'] = 1;
         res.send(res_json(true, data, "增加跑马灯"));
@@ -121,7 +122,7 @@ tb_game_manager.setTip = function(req, res, next) {
     let tip = req.query.tip;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.lset(connection,"TB:TB_GameManager:GameTip", index ,  tip.toString(), function (result) {
+    db_redis.lset(connection,redisUrl+"GameTip", index ,  tip.toString(), function (result) {
         data["items"] = result;
         data['total'] = result.length;
         res.send(res_json(true, data, "修改跑马灯"));
@@ -133,7 +134,7 @@ tb_game_manager.delTip = function(req, res, next) {
     let tip = req.query.tip;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.lrem(connection,"TB:TB_GameManager:GameTip",  0,tip, function (result) {
+    db_redis.lrem(connection,redisUrl+"GameTip",  0,tip, function (result) {
         data["items"] = result;
         data['total'] = result.length;
         res.send(res_json(true, data, "删除跑马灯"));
@@ -148,7 +149,7 @@ tb_game_manager.delTip = function(req, res, next) {
 tb_game_manager.getMail = function(req, res, next) {
     let data = {};
     let connection = db_redis.connection();
-    db_redis.lrange(connection,"TB:TB_GameManager:GameMail", 0,-1,function (list) {
+    db_redis.lrange(connection,redisUrl+"GameMail", 0,-1,function (list) {
         // console.log("confine list: ",typeof  list);
         // console.log("confine list: ",list);
         data["items"] = list;
@@ -160,7 +161,7 @@ tb_game_manager.getMail = function(req, res, next) {
 
 // 日志记录
 function LogRecordUserAction(roles, content, type) {
-    let sql = "insert into user_log_statistic (user,action,content,time) values ('" + roles +
+    let sql = "insert into admin_user_log_statistic (user,action,content,time) values ('" + roles +
         "','" +  type +
         "','" + content +
         "','" + cTime.CurrentTime() + "')";
@@ -181,7 +182,7 @@ tb_game_manager.addMail = function(req, res, next) {
     // console.log("who    ",roles);
     let data = {};
     let connection = db_redis.connection();
-    db_redis.rpush(connection,"TB:TB_GameManager:GameMail", mail.toString(), function (result) {
+    db_redis.rpush(connection,redisUrl+"GameMail", mail.toString(), function (result) {
         data["items"] = result;
         data['total'] = 1;
         res.send(res_json(true, data, "增加邮件"));
@@ -198,7 +199,7 @@ tb_game_manager.setMail = function(req, res, next) {
     let roles = req.query.roles;
     let data = {};
     let connection = db_redis.connection();
-    db_redis.lset(connection,"TB:TB_GameManager:GameMail", index ,  mail.toString(), function (result) {
+    db_redis.lset(connection,redisUrl+"GameMail", index ,  mail.toString(), function (result) {
         data["items"] = result;
         data['total'] = result.length;
         res.send(res_json(true, data, "修改邮件"));
@@ -213,7 +214,7 @@ tb_game_manager.delMail = function(req, res, next) {
     let data = {};
     let connection = db_redis.connection();
     console.log("mail   ",mail);
-    db_redis.lrem(connection,"TB:TB_GameManager:GameMail",  0, mail.toString(), function (result) {
+    db_redis.lrem(connection,redisUrl+"GameMail",  0, mail.toString(), function (result) {
         data["items"] = result;
         data['total'] = result.length;
         res.send(res_json(true, data, "删除邮件"));
@@ -230,7 +231,7 @@ tb_game_manager.delMail = function(req, res, next) {
 tb_game_manager.getIp = function(req, res, next) {
     let data = {};
     let connection = db_redis.connection();
-    db_redis.smembers(connection,"TB:TB_GameManager:GameWhiteIp", function (list) {
+    db_redis.smembers(connection,redisUrl+"GameWhiteIp", function (list) {
         data["items"] = list;
         data['total'] = list.length;
         res.send(res_json(true, data, "获取IP"));
@@ -243,7 +244,7 @@ tb_game_manager.addIp = function(req, res, next) {
     // console.log("tip    ",tip);
     let data = {};
     let connection = db_redis.connection();
-    db_redis.sadd(connection,"TB:TB_GameManager:GameWhiteIp",  ip, function (result) {
+    db_redis.sadd(connection,redisUrl+"GameWhiteIp",  ip, function (result) {
         data["items"] = result;
         data['total'] = 1;
         res.send(res_json(true, data, "增加ip"));
@@ -256,7 +257,7 @@ tb_game_manager.delIp = function(req, res, next) {
     let data = {};
     let connection = db_redis.connection();
     // console.log("mail   ",mail);
-    db_redis.srem(connection,"TB:TB_GameManager:GameWhiteIp",  ip, function (result) {
+    db_redis.srem(connection,redisUrl+"GameWhiteIp",  ip, function (result) {
         data["items"] = result;
         data['total'] = result.length;
         res.send(res_json(true, data, "删除ip"));

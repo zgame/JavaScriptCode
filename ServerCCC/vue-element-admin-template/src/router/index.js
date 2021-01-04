@@ -202,28 +202,28 @@ export const asyncRouterMap = [
         component: () => import('@/views/tbGameState/gameStateSignIn'),
         meta: { title: '签到日志', icon: 'form' }
         // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
-      {
-        path: 'game_state_clock_gold',
-        name: 'game_state_clock_gold',
-        component: () => import('@/views/tbGameState/gameStateClockGold'),
-        meta: { title: '整点日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
-      {
-        path: 'game_state_vip_dole',
-        name: 'game_state_vip_dole',
-        component: () => import('@/views/tbGameState/gameStateVipDole'),
-        meta: { title: 'VIP救济日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
-      },
-      {
-        path: 'game_state_lucky_wheel',
-        name: 'game_state_lucky_wheel',
-        component: () => import('@/views/tbGameState/gameStateLuckyWheel'),
-        meta: { title: '幸运轮盘日志', icon: 'form' }
-        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
       }
+      // {
+      //   path: 'game_state_clock_gold',
+      //   name: 'game_state_clock_gold',
+      //   component: () => import('@/views/tbGameState/gameStateClockGold'),
+      //   meta: { title: '整点日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
+      // {
+      //   path: 'game_state_vip_dole',
+      //   name: 'game_state_vip_dole',
+      //   component: () => import('@/views/tbGameState/gameStateVipDole'),
+      //   meta: { title: 'VIP救济日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // },
+      // {
+      //   path: 'game_state_lucky_wheel',
+      //   name: 'game_state_lucky_wheel',
+      //   component: () => import('@/views/tbGameState/gameStateLuckyWheel'),
+      //   meta: { title: '幸运轮盘日志', icon: 'form' }
+      //   // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      // }
     ]
   },
   {

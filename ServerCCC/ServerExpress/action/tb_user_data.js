@@ -1,5 +1,6 @@
 let db_redis = require('../model/dbRedis');
 let db_mysql = require('../model/dbMysql');
+let db_mongo = require('../model/dbMongo');
 let res_json = require('./utils/response_json');
 let deepClone = require('./utils/deepClone');
 let tb_user_data = {};
@@ -27,25 +28,28 @@ tb_user_data.getUser = function (req, res, next) {
         return;
     }
 
+    db_mongo.find(userId,"User",{"userId": Number(userId) },function (user_data){
 
-    let connection = db_redis.connection();
+
+    console.log(user_data)
+    // let connection = db_redis.connection();
     // TB:TB_AllPlayers:1000000001
-    db_redis.hget(connection,"TB:TB_AllPlayers:"+userId,userId , function (user_data) {
-        if(user_data === null){
+    // db_redis.hget(connection,"TB:TB_AllPlayers:"+userId,userId , function (user_data) {
+        if(user_data.length === 0){
             returnError();
             console.log("玩家uid不存在",userId);
             return;
         }
 
         console.log("type", typeof user_data);
-        console.log("tb_user_data:", user_data['UserId']);
-        let user_data_struct = JSON.parse(user_data);
-        console.log("struct " , user_data_struct["UserId"]);
+        console.log("tb_user_data:", user_data[0]['userId']);
+        // let user_data_struct = JSON.parse(user_data[0]);
+        // console.log("struct " , user_data_struct["userId"]);
 
-        data["items"] = user_data_struct;
+        data["items"] = user_data[0];
         data['total'] = 1;
-        res.send(res_json(true, data, "redis玩家数据"));
-        db_redis.closeRedis(connection);
+        res.send(res_json(true, data, "玩家数据"));
+        // db_redis.closeRedis(connection);
     }) ;
 
 
@@ -83,7 +87,7 @@ tb_user_data.logList = function (req, res, next) {
 
     // 输入玩家id
     if (userId !== '') {
-        sql += "SELECT * FROM zzlog_user_" + userId + " where true";
+        sql += "SELECT * FROM log_user_" + userId + " where true";
     } else {
         // 默认的空id
         returnError();
