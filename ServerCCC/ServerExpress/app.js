@@ -38,6 +38,7 @@ let tb_recharge = require("./action/tb_recharge");
 let tb_server_state = require("./action/tb_server_state");
 let tb_server_list = require("./action/tb_server_list");
 let tb_portia_shop = require("./action/portia_shop");
+let tb_portia_control = require("./action/portia_control");
 let tb_user_data = require("./action/tb_user_data");
 let tb_all_statistic = require("./action/tb_all_statistic");
 
@@ -67,7 +68,12 @@ routes.Get(app,'/portia_shop/list', tb_portia_shop.list)
 routes.Get(app,'/portia_shop/add', tb_portia_shop.add)
 routes.Get(app,'/portia_shop/change', tb_portia_shop.change)
 routes.Get(app,'/portia_shop/del', tb_portia_shop.del)
-// routes.Get(app,'/portia_shop/get', tb_server_list.clientGet)
+// portia control
+routes.Get(app,'/portia_control/list', tb_portia_control.list)
+routes.Get(app,'/portia_control/add', tb_portia_control.add)
+routes.Get(app,'/portia_control/change', tb_portia_control.change)
+routes.Get(app,'/portia_control/del', tb_portia_control.del)
+
 // 玩家
 routes.Get(app,'/user_data/get_user', tb_user_data.getUser)
 routes.Get(app,'/user_data/log_list', tb_user_data.logList)

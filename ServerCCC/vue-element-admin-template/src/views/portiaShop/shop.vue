@@ -288,6 +288,7 @@
       // --------------------------------修改用户--------------------------------
       editList: function(index, row) {
         this.dialogFormVisible = true
+        this.dialogStatus = 'edit'
         this.dlgData.id = '1'
         this.dlgData.sellingway = '0'
         this.dlgData.recommend = '0'
