@@ -114,6 +114,20 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/portia_shop',
+    component: Layout,
+    meta: { title: '波西亚商城', icon: 'excel', roles: ['view'] },
+    children: [
+      {
+        path: 'portia_shop',
+        name: 'portia_shop',
+        component: () => import('@/views/portiaShop/index'),
+        meta: { title: '波西亚商城', icon: 'excel' }
+        // meta: { title: '表单', icon: 'form', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/server_state',
     component: Layout,
     meta: { title: '服务器状态', icon: 'tree', roles: ['admin'] },

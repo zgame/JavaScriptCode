@@ -29,7 +29,7 @@ dbMysql.connection = function () {
         host: '47.92.150.31',
         user: 'patheaDev',
         password: 'LncDnQaR502NWaFdCVXMeKacglgnf3',
-        database: 'sandrock',
+        database: 'portia_shop',
         port: 3306
     });
     //数据库连接
