@@ -311,13 +311,17 @@
         this.$refs['dlgData'].validate((valid) => {
           if (valid) {
             return new Promise((resolve, reject) => {
-              actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime).then(response => {
-                this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
-                this.getUserList()
-                this.dialogFormVisible = false
-                resolve()
-              }).catch(error => {
-                reject(error)
+              this.$confirm('确定修改么?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
+                return new Promise((resolve, reject) => {
+                  actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime).then(response => {
+                    this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
+                    this.getUserList()
+                    this.dialogFormVisible = false
+                    resolve()
+                  }).catch(error => {
+                    reject(error)
+                  })
+                })
               })
             })
           }
