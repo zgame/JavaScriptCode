@@ -58,7 +58,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" icon="el-icon-edit" type="primary" @click="addList(scope.row.id, scope.row)">新增</el-button>
+<!--          <el-button size="mini" icon="el-icon-edit" type="primary" @click="addList(scope.row.id, scope.row)">新增</el-button>-->
           <el-button size="mini" icon="el-icon-edit-outline" type="success" @click="editList(scope.row.id, scope.row)">编辑</el-button>
           <el-button size="mini" icon="el-icon-delete" type="danger" @click="deleteList(scope.row.id, scope.row)">删除</el-button>
         </template>

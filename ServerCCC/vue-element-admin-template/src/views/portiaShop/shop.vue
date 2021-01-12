@@ -73,7 +73,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" icon="el-icon-edit" type="primary" @click="addList(scope.row.id, scope.row)">新增</el-button>
+<!--          <el-button size="mini" icon="el-icon-edit" type="primary" @click="addList(scope.row.id, scope.row)">新增</el-button>-->
           <el-button size="mini" icon="el-icon-edit-outline" type="success" @click="editList(scope.row.id, scope.row)">编辑</el-button>
           <el-button size="mini" icon="el-icon-delete" type="danger" @click="deleteList(scope.row.id, scope.row)">删除</el-button>
         </template>
@@ -95,28 +95,70 @@
           <el-input v-model="dlgData.id"></el-input>
         </el-form-item>
         <el-form-item label="sellingway" prop="server">
-          <el-input v-model="dlgData.sellingway"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              配置该物品会在“商城”中的哪一个模块进行销售<br/>
+              0;市民套装模块<br/>
+              1;玩家时装模块<br/>
+              2;市民套装模块和玩家时装模块都可出售<br/>
+              -1;下架</div>
+            <el-input v-model="dlgData.sellingway"></el-input>
+          </el-tooltip>
         </el-form-item>
-        <el-form-item label="sellingway" prop="server">
-          <el-input v-model="dlgData.sellingway"></el-input>
-        </el-form-item>
+
         <el-form-item label="recommend" prop="server">
-          <el-input v-model="dlgData.recommend"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              注释：加入哪一类推荐页<br/>
+              0;不加入<br/>
+              1;市民套装推荐页<br/>
+              2:玩家时装推荐页<br/>
+              3;市民套装推荐页和玩家时装推荐页都可能加入</div>
+            <el-input v-model="dlgData.recommend"></el-input>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="recommendactivity" prop="server">
-          <el-input v-model="dlgData.recommendactivity"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              配置该商品是否上推荐广告位。<br/>
+              0;不上<br/>
+              1;上</div>
+            <el-input v-model="dlgData.recommendactivity"></el-input>
+          </el-tooltip>
+<!--          <el-input v-model="dlgData.recommendactivity"></el-input>-->
         </el-form-item>
         <el-form-item label="price" prop="server">
-          <el-input v-model="dlgData.price"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              出售价格（支持浮点数配置）</div>
+            <el-input v-model="dlgData.price"></el-input>
+          </el-tooltip>
+
         </el-form-item>
         <el-form-item label="discountprice" prop="server">
-          <el-input v-model="dlgData.discountprice"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              打折价格，支持浮点数配置，和“打折限时”参数捆绑使用。
+              -1;无打折价格</div>
+            <el-input v-model="dlgData.discountprice"></el-input>
+          </el-tooltip>
+
         </el-form-item>
         <el-form-item label="starttime" prop="server">
-          <el-input v-model="dlgData.starttime"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              打折开始时间 例子：2020-11-30</div>
+            <el-input v-model="dlgData.starttime"></el-input>
+          </el-tooltip>
+
         </el-form-item>
         <el-form-item label="endtime" prop="server">
-          <el-input v-model="dlgData.endtime"></el-input>
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              打折结束时间 例子：2020-11-30</div>
+            <el-input v-model="dlgData.endtime"></el-input>
+          </el-tooltip>
+
         </el-form-item>
 <!--        <el-form-item label="服务器状态" prop="state" v-if="dialogStatus!=='create'">-->
 <!--          <el-select v-model="dlgData.state" placeholder="select">-->
