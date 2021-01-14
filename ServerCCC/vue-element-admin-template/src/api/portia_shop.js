@@ -9,20 +9,20 @@ export function getList(params) {
 }
 
 // 增加
-export function actionAddList(id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime) {
+export function actionAddList(id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime, gift) {
   return request({
     url: '/portia_shop/add',
     method: 'get',
-    params: { id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime }
+    params: { id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime, gift }
   })
 }
 
 // 编辑
-export function actionEditList(id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime) {
+export function actionEditList(id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime, gift) {
   return request({
     url: '/portia_shop/change',
     method: 'get',
-    params: { id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime }
+    params: { id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime, gift }
   })
 }
 

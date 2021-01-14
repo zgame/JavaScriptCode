@@ -57,10 +57,11 @@ portia_shop.add = function (req, res, next) {
     let discountprice = req.query.discountprice;
     let starttime = req.query.starttime;
     let endtime = req.query.endtime;
+    let gift = req.query.gift;
 
     let data = {};
     let connection = db_mysql.connection();
-    let sql = "insert into shopmall (id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime) values ('"
+    let sql = "insert into shopmall (id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime, gift) values ('"
         +id + "','"
         +sellingway + "','"
         +recommend + "','"
@@ -68,7 +69,8 @@ portia_shop.add = function (req, res, next) {
         +price + "','"
         +discountprice + "','"
         +starttime + "','"
-        +endtime+"')";
+        +endtime + "','"
+        +gift+"')";
 
     console.info(sql);
     connection.query(sql, function (err, result) {
@@ -91,6 +93,7 @@ portia_shop.change = function (req, res, next) {
     let discountprice = req.query.discountprice;
     let starttime = req.query.starttime;
     let endtime = req.query.endtime;
+    let gift = req.query.gift;
 
     let data = {};
     let connection = db_mysql.connection();
@@ -102,6 +105,7 @@ portia_shop.change = function (req, res, next) {
         "', discountprice = '"+ discountprice +
         "', starttime = '"+ starttime +
         "', endtime = '"+ endtime +
+        "', gift = '"+ gift +
         "' where id = '"+id+"'";
     console.info(sql);
     connection.query(sql, function (err, result) {

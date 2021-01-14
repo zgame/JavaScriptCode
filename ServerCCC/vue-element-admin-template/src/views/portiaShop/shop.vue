@@ -64,6 +64,9 @@
       <el-table-column label="endtime" width="150" align="center">
         <template slot-scope="scope">     <el-tag>{{scope.row.endtime}}</el-tag>        </template>
       </el-table-column>
+      <el-table-column label="gift" width="500" align="center">
+          <template slot-scope="scope">     <el-tag>{{scope.row.gift}}</el-tag>        </template>
+      </el-table-column>
 
 <!--      <el-table-column label="服务器状态" width="110" align="center">-->
 <!--        <template slot-scope="scope">-->
@@ -160,6 +163,14 @@
           </el-tooltip>
 
         </el-form-item>
+        <el-form-item label="gift" prop="server">
+          <el-tooltip placement="top">
+            <div slot="content">注释：<br/>
+              这里填写礼包内容，用#分割</div>
+            <el-input  type="textarea" :rows="5"   v-model="dlgData.gift"></el-input>
+          </el-tooltip>
+
+        </el-form-item>
 <!--        <el-form-item label="服务器状态" prop="state" v-if="dialogStatus!=='create'">-->
 <!--          <el-select v-model="dlgData.state" placeholder="select">-->
 <!--            <el-option label="开启" value="1"></el-option>-->
@@ -228,7 +239,8 @@
           price: '',
           discountprice: '',
           starttime: '',
-          endtime: ''
+          endtime: '',
+          gift: ''
         },
         // **********弹窗变量*************
         dialogStatus: '',
@@ -310,12 +322,13 @@
         this.dlgData.discountprice = '-1'
         this.dlgData.starttime = '-1'
         this.dlgData.endtime = '-1'
+        this.dlgData.gift = '-1'
       },
       AddListAction(index, row) {
         this.$refs.dlgData.validate((valid) => {
           if (valid) {
             return new Promise((resolve, reject) => {
-              actionAddList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime).then(response => {
+              actionAddList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime, this.dlgData.gift).then(response => {
                 this.$notify({ title: '成功', message: '增加成功', type: 'success', duration: 2000 })
                 this.getUserList()
                 this.dialogFormVisible = false
@@ -339,6 +352,7 @@
         this.dlgData.discountprice = '-1'
         this.dlgData.starttime = '-1'
         this.dlgData.endtime = '-1'
+        this.dlgData.gift = '-1'
         this.dialogStatus = 'update'
 
         this.dlgData.id = row.id
@@ -349,6 +363,7 @@
         this.dlgData.discountprice = row.discountprice
         this.dlgData.starttime = row.starttime
         this.dlgData.endtime = row.endtime
+        this.dlgData.gift = row.gift
       },
       EditListAction(index, row) {
         this.$refs['dlgData'].validate((valid) => {
@@ -356,7 +371,7 @@
             return new Promise((resolve, reject) => {
               this.$confirm('确定修改么?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
                 return new Promise((resolve, reject) => {
-                  actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime).then(response => {
+                  actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime, this.dlgData.gift).then(response => {
                     this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
                     this.getUserList()
                     this.dialogFormVisible = false
