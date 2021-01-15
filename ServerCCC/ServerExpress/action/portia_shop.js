@@ -59,6 +59,13 @@ portia_shop.add = function (req, res, next) {
     let endtime = req.query.endtime;
     let gift = req.query.gift;
 
+    if (starttime ==="" || starttime==="0-0-0 0:0:" || starttime === undefined){
+        starttime = "-1"
+    }
+    if (endtime ===""|| endtime==="0-0-0 0:0:"|| endtime === undefined){
+        endtime = "-1"
+    }
+
     let data = {};
     let connection = db_mysql.connection();
     let sql = "insert into shopmall (id, sellingway, recommend, recommendactivity, price, discountprice, starttime, endtime, gift) values ('"
@@ -94,6 +101,13 @@ portia_shop.change = function (req, res, next) {
     let starttime = req.query.starttime;
     let endtime = req.query.endtime;
     let gift = req.query.gift;
+
+    if (starttime ==="" || starttime==="0-0-0 0:0:" || starttime === undefined){
+        starttime = "-1"
+    }
+    if (endtime ===""|| endtime==="0-0-0 0:0:"|| endtime === undefined){
+        endtime = "-1"
+    }
 
     let data = {};
     let connection = db_mysql.connection();

@@ -148,19 +148,21 @@
 
         </el-form-item>
         <el-form-item label="starttime" prop="server">
-          <el-tooltip placement="top">
-            <div slot="content">注释：<br/>
-              打折开始时间 例子：2020-11-30</div>
-            <el-input v-model="dlgData.starttime"></el-input>
-          </el-tooltip>
+<!--          <el-tooltip placement="top">-->
+<!--            <div slot="content">注释：<br/>-->
+<!--              打折开始时间 例子：2020-11-30</div>-->
+<!--            <el-input v-model="dlgData.starttime"></el-input>-->
+<!--          </el-tooltip>-->
+          <el-date-picker   v-model="dlgData.starttime"  align="right" type="date" placeholder="选择开始日期" :picker-options="pickerOptions">        </el-date-picker>
 
         </el-form-item>
         <el-form-item label="endtime" prop="server">
-          <el-tooltip placement="top">
-            <div slot="content">注释：<br/>
-              打折结束时间 例子：2020-11-30</div>
-            <el-input v-model="dlgData.endtime"></el-input>
-          </el-tooltip>
+<!--          <el-tooltip placement="top">-->
+<!--            <div slot="content">注释：<br/>-->
+<!--              打折结束时间 例子：2020-11-30</div>-->
+<!--            <el-input v-model="dlgData.endtime"></el-input>-->
+<!--          </el-tooltip>-->
+          <el-date-picker   v-model="dlgData.endtime"  align="right" type="date" placeholder="选择结束日期" :picker-options="pickerOptions">        </el-date-picker>
 
         </el-form-item>
         <el-form-item label="gift" prop="server">
@@ -190,7 +192,7 @@
 </template>
 <script>
   import { getList, actionAddList, actionEditList, actionDelList } from '@/api/portia_shop'
-  // import { parseTime, pickerOptions } from '@/utils'
+  import { parseTime } from '@/utils'
   import waves from '@/directive/waves' // 水波纹指令
   // import LineChart from '@/components/Charts/Line3Chart'
 
@@ -216,6 +218,31 @@
     },
     data() {
       return {
+        pickerOptions: {
+          // disabledDate(time) {
+          //   return time.getTime() > Date.now()
+          // },
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date())
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          }, {
+            text: '一周后',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
+          }]
+        },
         list: null,
         // **********分页*************
         listQuery: {
@@ -255,9 +282,9 @@
           recommend: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 1, max: 20, message: '长度在 1 到 19 个字符', trigger: 'blur' }],
           recommendactivity: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 1, max: 20, message: '长度在 1 到 19 个字符', trigger: 'blur' }],
           price: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 1, max: 20, message: '长度在 1 到 19 个字符', trigger: 'blur' }],
-          discountprice: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 1, max: 20, message: '长度在 1 到 19 个字符', trigger: 'blur' }],
-          starttime: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 10, max: 10, message: '长度在 10 个字符', trigger: 'blur' }],
-          endtime: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 10, max: 10, message: '长度在 10  个字符', trigger: 'blur' }]
+          discountprice: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 1, max: 20, message: '长度在 1 到 19 个字符', trigger: 'blur' }]
+          // starttime: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 10, max: 10, message: '长度在 10 个字符', trigger: 'blur' }],
+          // endtime: [{ required: true, message: '不能空', trigger: 'blur' }, { min: 10, max: 10, message: '长度在 10  个字符', trigger: 'blur' }]
         }
       }
     },
@@ -328,7 +355,10 @@
         this.$refs.dlgData.validate((valid) => {
           if (valid) {
             return new Promise((resolve, reject) => {
-              actionAddList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime, this.dlgData.gift).then(response => {
+              actionAddList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend,
+                this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice,
+                parseTime(this.dlgData.starttime).substring(0, 10), parseTime(this.dlgData.endtime).substring(0, 10),
+                this.dlgData.gift).then(response => {
                 this.$notify({ title: '成功', message: '增加成功', type: 'success', duration: 2000 })
                 this.getUserList()
                 this.dialogFormVisible = false
@@ -371,7 +401,10 @@
             return new Promise((resolve, reject) => {
               this.$confirm('确定修改么?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
                 return new Promise((resolve, reject) => {
-                  actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend, this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice, this.dlgData.starttime, this.dlgData.endtime, this.dlgData.gift).then(response => {
+                  actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend,
+                    this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice,
+                    parseTime(this.dlgData.starttime).substring(0, 10), parseTime(this.dlgData.endtime).substring(0, 10),
+                    this.dlgData.gift).then(response => {
                     this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
                     this.getUserList()
                     this.dialogFormVisible = false
