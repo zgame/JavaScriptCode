@@ -153,7 +153,7 @@
 <!--              打折开始时间 例子：2020-11-30</div>-->
 <!--            <el-input v-model="dlgData.starttime"></el-input>-->
 <!--          </el-tooltip>-->
-          <el-date-picker   v-model="dlgData.starttime"  align="right" type="date" placeholder="选择开始日期" :picker-options="pickerOptions">        </el-date-picker>
+          <el-date-picker   v-model="dlgData.starttime"  align="right" type="datetime" placeholder="选择开始日期" :picker-options="pickerOptions">        </el-date-picker>
 
         </el-form-item>
         <el-form-item label="endtime" prop="server">
@@ -162,7 +162,7 @@
 <!--              打折结束时间 例子：2020-11-30</div>-->
 <!--            <el-input v-model="dlgData.endtime"></el-input>-->
 <!--          </el-tooltip>-->
-          <el-date-picker   v-model="dlgData.endtime"  align="right" type="date" placeholder="选择结束日期" :picker-options="pickerOptions">        </el-date-picker>
+          <el-date-picker   v-model="dlgData.endtime"  align="right" type="datetime" placeholder="选择结束日期" :picker-options="pickerOptions">        </el-date-picker>
 
         </el-form-item>
         <el-form-item label="gift" prop="server">
@@ -357,7 +357,7 @@
             return new Promise((resolve, reject) => {
               actionAddList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend,
                 this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice,
-                parseTime(this.dlgData.starttime).substring(0, 10), parseTime(this.dlgData.endtime).substring(0, 10),
+                parseTime(this.dlgData.starttime).substring(0, 19), parseTime(this.dlgData.endtime).substring(0, 19),
                 this.dlgData.gift).then(response => {
                 this.$notify({ title: '成功', message: '增加成功', type: 'success', duration: 2000 })
                 this.getUserList()
@@ -403,7 +403,7 @@
                 return new Promise((resolve, reject) => {
                   actionEditList(this.dlgData.id, this.dlgData.sellingway, this.dlgData.recommend,
                     this.dlgData.recommendactivity, this.dlgData.price, this.dlgData.discountprice,
-                    parseTime(this.dlgData.starttime).substring(0, 10), parseTime(this.dlgData.endtime).substring(0, 10),
+                    parseTime(this.dlgData.starttime).substring(0, 19), parseTime(this.dlgData.endtime).substring(0, 19),
                     this.dlgData.gift).then(response => {
                     this.$notify({ title: '成功', message: '编辑成功', type: 'success', duration: 2000 })
                     this.getUserList()
